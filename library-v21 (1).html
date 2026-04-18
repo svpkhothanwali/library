@@ -1,0 +1,3089 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>स्वामी विवेकानन्द पुस्तकालय – खोथांवाली v21</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=DM+Sans:wght@400;500;600;700&display=swap');
+  :root {
+    --primary:#1a73e8; --primary-dark:#1557b0; --primary-light:#e8f0fe;
+    --green:#1e8e3e; --green-light:#e6f4ea;
+    --red:#d93025; --red-light:#fce8e6;
+    --orange:#e37400; --orange-light:#fef3e2;
+    --yellow-light:#fef7e0;
+    --bg:#f0f4f8; --card:#fff;
+    --text:#202124; --text2:#5f6368; --border:#dadce0;
+    --shadow:0 1px 3px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.08);
+    --radius:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  .topbar{background:var(--primary);color:#fff;padding:0 20px;display:flex;align-items:center;
+    justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);}
+  .topbar h1{font-size:18px;font-weight:700;}
+  .sync-btn{background:rgba(255,255,255,.2);border:none;color:#fff;padding:6px 14px;
+    border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;transition:.2s;}
+  .sync-btn:hover{background:rgba(255,255,255,.3);}
+  .nav{background:#fff;display:flex;border-bottom:1px solid var(--border);overflow-x:auto;
+    position:sticky;top:56px;z-index:99;}
+  .nav button{flex:1;min-width:90px;padding:14px 8px;border:none;background:none;
+    color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;transition:.2s;}
+  .nav button.active{color:var(--primary);border-bottom-color:var(--primary);}
+  .nav button:hover:not(.active){background:#f8f9fa;}
+  .page{display:none;padding:16px;max-width:1100px;margin:0 auto;}
+  .page.active{display:block;}
+  .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
+  .stat-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--primary);}
+  .stat-card.green{border-color:var(--green);}
+  .stat-card.red{border-color:var(--red);}
+  .stat-card.orange{border-color:var(--orange);}
+  .stat-card.yellow{border-color:#f9a825;}
+  .stat-card label{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+  .stat-card .val{font-size:26px;font-weight:700;margin-top:4px;}
+  .stat-card .val.green{color:var(--green);}
+  .stat-card .val.red{color:var(--red);}
+  .stat-card .val.orange{color:var(--orange);}
+  .sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
+  .sec-header h2{font-size:16px;font-weight:700;}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;}
+  .btn-primary{background:var(--primary);color:#fff;}
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-green{background:var(--green);color:#fff;}
+  .btn-green:hover{background:#157a32;}
+  .btn-orange{background:var(--orange);color:#fff;}
+  .btn-orange:hover{background:#b85c00;}
+  .btn-red{background:var(--red);color:#fff;}
+  .btn-red:hover{background:#a50e0e;}
+  .btn-outline{background:#fff;color:var(--text);border:1px solid var(--border);}
+  .btn-outline:hover{background:#f8f9fa;}
+  .btn-wa{background:#25d366;color:#fff;}
+  .btn-wa:hover{background:#1da851;}
+  .btn-sm{padding:5px 10px;font-size:12px;border-radius:6px;}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
+  .card-body{padding:16px;}
+  .search-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .search-row input,.search-row select{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;outline:none;background:#fff;}
+  .search-row input:focus,.search-row select:focus{border-color:var(--primary);}
+  .search-row input{flex:1;min-width:180px;}
+  .tbl-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead tr{background:#f8f9fa;}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);}
+  th{font-weight:600;color:var(--text2);font-size:12px;text-transform:uppercase;letter-spacing:.3px;}
+  tr:hover td{background:#f8f9fa;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+  .badge-green{background:var(--green-light);color:var(--green);}
+  .badge-red{background:var(--red-light);color:var(--red);}
+  .badge-yellow{background:var(--yellow-light);color:#7a5c00;}
+  .badge-orange{background:var(--orange-light);color:var(--orange);}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;}
+  .overlay.show{display:flex;}
+  .modal{background:#fff;border-radius:16px;width:min(96vw,540px);max-height:92vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+  .modal-header{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between;}
+  .modal-header h3{font-size:16px;font-weight:700;}
+  .close-btn{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text2);line-height:1;}
+  .modal-body{padding:20px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .form-grid .full{grid-column:1/-1;}
+  label.lbl{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px;}
+  input.inp,select.inp,textarea.inp{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;outline:none;font-family:inherit;}
+  input.inp:focus,select.inp:focus,textarea.inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light);}
+  .modal-footer{padding:0 20px 20px;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
+  .month-sel{display:flex;align-items:center;gap:8px;}
+  .month-sel input[type=month]{padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;}
+  @media print{body *{visibility:hidden;}.receipt-print,.receipt-print *{visibility:visible;}.receipt-print{position:fixed;inset:0;padding:24px;}}
+  .receipt-box{font-family:'DM Sans',sans-serif;border:2px solid #000;padding:20px;max-width:340px;margin:0 auto;font-size:13px;}
+  .receipt-box h2{text-align:center;font-size:16px;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:12px;}
+  .receipt-row{display:flex;justify-content:space-between;padding:3px 0;}
+  .receipt-total{border-top:1px solid #000;margin-top:8px;padding-top:8px;font-weight:700;}
+  .receipt-footer{text-align:center;margin-top:12px;font-size:11px;color:#555;}
+  .receipt-sign{text-align:right;margin-top:20px;font-size:12px;font-weight:600;border-top:1px dashed #000;padding-top:6px;}
+  .toast{position:fixed;bottom:20px;right:20px;background:#323232;color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;z-index:999;transform:translateY(80px);opacity:0;transition:.3s;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  .empty-state{text-align:center;padding:40px;color:var(--text2);}
+  tr.row-expired td{background:#fce8e6!important;}
+  tr.row-expiring td{background:#fef7e0!important;}
+  tr.row-disabled td{background:#f8f9fa!important;color:#999;}
+  /* ── Member Cards ── */
+  .member-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+  .member-card{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:14px 16px;border-left:4px solid var(--primary);transition:.15s;}
+  .member-card.disabled{border-left-color:#bbb;opacity:.75;}
+  .member-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+  .member-card-name{font-size:15px;font-weight:700;color:var(--text);}
+  .member-card-id{font-size:10px;color:var(--primary);font-weight:700;background:var(--primary-light);padding:2px 7px;border-radius:10px;}
+  .member-card-info{font-size:12px;color:var(--text2);line-height:1.7;}
+  .member-card-info span{color:var(--text);font-weight:500;}
+  .member-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px;}
+  .member-card-fee{font-size:13px;font-weight:700;color:var(--green);}
+  .member-card-actions{display:flex;gap:4px;flex-wrap:wrap;}
+  /* ── Fee Cards ── */
+  .fee-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;}
+  .fee-card{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:14px 16px;border-left:4px solid var(--green);transition:.15s;}
+  .fee-card.baki{border-left-color:var(--red);}
+  .fee-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .fee-card-receipt{font-size:11px;font-weight:700;color:var(--primary);background:var(--primary-light);padding:2px 8px;border-radius:10px;}
+  .fee-card-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;}
+  .fee-card-info{font-size:12px;color:var(--text2);line-height:1.7;}
+  .fee-card-info span{color:var(--text);font-weight:500;}
+  .fee-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px;}
+  .fee-card-amount{font-size:15px;font-weight:700;color:var(--green);}
+  .fee-card-actions{display:flex;gap:4px;}
+  .login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#1a73e8 0%,#0d47a1 100%);display:flex;align-items:center;justify-content:center;z-index:9999;}
+  .login-box{background:#fff;border-radius:20px;padding:40px 32px;width:min(92vw,360px);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+  .login-box .lib-icon{font-size:48px;margin-bottom:8px;}
+  .login-box h2{font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;}
+  .login-box p{font-size:13px;color:var(--text2);margin-bottom:24px;}
+  .login-box input{width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:10px;font-size:15px;outline:none;text-align:center;letter-spacing:3px;margin-bottom:12px;}
+  .login-box input:focus{border-color:var(--primary);}
+  .login-box button{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;}
+  .login-box button:hover{background:var(--primary-dark);}
+  .login-error{color:var(--red);font-size:13px;margin-top:8px;min-height:20px;}
+  .login-hint{font-size:11px;color:var(--text2);margin-top:16px;}
+  /* Fee type badges */
+  .fee-type-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;}
+  .fee-type-baki{background:#fce8e6;color:#d93025;}
+  .suggest-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);font-size:13px;}
+  .suggest-item:last-child{border-bottom:none;}
+  .suggest-item:hover{background:var(--primary-light);}
+  .suggest-item .s-name{font-weight:700;color:var(--text);}
+  .suggest-item .s-sub{font-size:11px;color:var(--text2);margin-top:2px;}
+  .suggest-loading{padding:10px 14px;font-size:12px;color:var(--text2);}
+  .fee-type-monthly{background:#e6f4ea;color:#1e8e3e;}
+
+  /* ════ MOBILE OPTIMIZATIONS ════ */
+  @media (max-width:600px){
+    /* Base font bump for readability */
+    body{font-size:14px;}
+
+    /* Topbar: smaller, tighter */
+    .topbar{height:50px;padding:0 12px;}
+    .topbar h1{font-size:15px;}
+    .topbar>div:first-child div{font-size:9px;}
+    .sync-btn{padding:5px 10px;font-size:12px;}
+
+    /* Nav tabs: smaller text, no min-width overflow */
+    .nav button{min-width:70px;padding:10px 4px;font-size:11px;}
+
+    /* Page padding */
+    .page{padding:10px;}
+
+    /* Stat cards: 2 per row on mobile */
+    .dash-grid{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+    .stat-card{padding:12px 10px;}
+    .stat-card label{font-size:10px;}
+    .stat-card .val{font-size:20px;}
+
+    /* Section header */
+    .sec-header h2{font-size:14px;}
+    .sec-header{margin-bottom:10px;}
+
+    /* Buttons: better touch targets — login button exclude */
+    .btn{padding:9px 14px;font-size:13px;min-height:40px;}
+    .btn-sm{padding:7px 10px;font-size:12px;min-height:36px;}
+    /* Login box: ensure not affected by generic overrides */
+    .login-box button{min-height:unset;padding:14px!important;font-size:16px!important;width:100%;}
+    .login-box input{font-size:18px!important;padding:14px!important;}
+
+    /* Search row: full width inputs */
+    .search-row{gap:6px;}
+    .search-row input,.search-row select{font-size:14px;padding:9px 10px;}
+
+    /* Member cards: single column, larger text */
+    .member-cards{grid-template-columns:1fr;}
+    .member-card{padding:14px;}
+    .member-card-name{font-size:16px;}
+    .member-card-info{font-size:13px;line-height:1.9;}
+    .member-card-fee{font-size:14px;}
+    .member-card-actions .btn-sm{min-height:38px;padding:7px 10px;}
+
+    /* Fee cards: single column */
+    .fee-cards{grid-template-columns:1fr;}
+    .fee-card{padding:14px;}
+    .fee-card-name{font-size:15px;}
+    .fee-card-info{font-size:13px;line-height:1.9;}
+    .fee-card-amount{font-size:16px;}
+
+    /* Modal: full width bottom sheet — login-screen exclude */
+    .overlay:not(#loginScreen).show{align-items:flex-end;}
+    .overlay:not(#loginScreen) .modal{width:100vw;max-height:100vh;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;}
+    .modal-body{padding:14px;}
+    .modal-header{padding:16px 14px 0;}
+    .modal-footer{padding:0 14px 20px;gap:8px;}
+
+    /* Form inputs: larger for touch */
+    input.inp,select.inp,textarea.inp{font-size:15px;padding:11px 12px;}
+    label.lbl{font-size:13px;}
+
+    /* Form grid: single column on mobile */
+    .form-grid{grid-template-columns:1fr;}
+    .form-grid .full{grid-column:1;}
+
+    /* Cards */
+    .card-body{padding:12px;}
+
+    /* Seat grid: 5 cols on mobile */
+    #seatGrid{grid-template-columns:repeat(5,1fr);gap:6px;}
+
+    /* Tables that remain (reports etc): scrollable */
+    .tbl-wrap{-webkit-overflow-scrolling:touch;}
+    th,td{padding:8px 8px;font-size:12px;}
+
+    /* Toast: full width bottom */
+    .toast{left:12px;right:12px;bottom:12px;text-align:center;}
+
+    /* Login box */
+    .login-box{padding:28px 20px;}
+    .login-box input{font-size:18px;padding:14px;}
+    .login-box button{font-size:16px;padding:14px;}
+  }
+
+  /* Medium phones / tablets */
+  @media (min-width:601px) and (max-width:900px){
+    .member-cards{grid-template-columns:repeat(2,1fr);}
+    .fee-cards{grid-template-columns:repeat(2,1fr);}
+    .modal{width:min(96vw,520px);}
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<div id="pdfRenderZone" style="position:fixed;left:-9999px;top:0;width:794px;background:#fff;padding:0;font-family:Arial,sans-serif;font-size:12px;color:#000;line-height:1.5;"></div>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="lib-icon">📚</div>
+    <h2>स्वामी विवेकानन्द पुस्तकालय</h2>
+    <p>खोथांवाली</p>
+    <input type="password" id="loginPass" placeholder="पासवर्ड / Password" maxlength="20"
+      onkeydown="if(event.key==='Enter') checkLogin()"/>
+    <button onclick="checkLogin()">🔓 लॉगिन / Login</button>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-hint">3 बार गलत / 3 Wrong = 30 sec lock</div>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div style="font-size:10px;opacity:.7;">📚 खोथांवाली</div>
+    <h1>स्वामी विवेकानन्द पुस्तकालय</h1>
+  </div>
+  <div style="display:flex;gap:6px;">
+    <button class="sync-btn" onclick="loadAll()">🔄 अपडेट / Update</button>
+    <button class="sync-btn" onclick="openModal('modalSettings')">⚙️ सेटिंग / Settings</button>
+    <button class="sync-btn" onclick="logout()">🔒 लॉगआउट / Logout</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="active" onclick="showPage('dashboard')">🏠 डैशबोर्ड / Dashboard</button>
+  <button onclick="showPage('members')">👥 सदस्य / Members</button>
+  <button onclick="showPage('fees')">💰 फीस / Fees</button>
+  <button onclick="showPage('expenses')">📊 खर्च / Expenses</button>
+  <button onclick="showPage('seats')">🪑 सीट / Seats</button>
+  <button onclick="showPage('reports')">📈 रिपोर्ट / Reports</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════
+     DASHBOARD PAGE
+═══════════════════════════════════════════ -->
+<div class="page active" id="p-dashboard">
+  <!-- STATS CARDS: कुल सदस्य / Total Members + सक्रिय / Active Members अलग-अलग cards -->
+  <div class="dash-grid">
+    <div class="stat-card"><label>कुल सदस्य / Total Members</label><div class="val" id="dc-total">0</div></div>
+    <div class="stat-card green"><label>सक्रिय / Active Members</label><div class="val green" id="dc-active">0</div></div>
+    <div class="stat-card green"><label>कुल आय / Total Income</label><div class="val green" id="dc-income">₹0</div></div>
+    <div class="stat-card red"><label>कुल खर्च / Total Expense</label><div class="val red" id="dc-expense">₹0</div></div>
+    <div class="stat-card" style="border-color:#1a73e8"><label>शुद्ध लाभ / Net Profit</label><div class="val" id="dc-profit">₹0</div></div>
+    <div class="stat-card yellow"><label>बकाया / Pending Fees</label><div class="val" id="dc-due" style="color:#f9a825;">₹0</div></div>
+  </div>
+
+  <!-- माह-वार सारांश: filter जमा महीने के हिसाब से -->
+  <div class="card"><div class="card-body">
+    <div class="sec-header">
+      <h2>📅 माह-वार सारांश / Monthly Summary</h2>
+      <div class="month-sel"><input type="month" id="dashMonth" onchange="loadDashMonth()"/></div>
+    </div>
+    <div class="dash-grid" style="margin-bottom:0;">
+      <div class="stat-card green"><label>माह आय / Month Income</label><div class="val green" id="dm-income">₹0</div></div>
+      <div class="stat-card red"><label>माह खर्च / Month Expense</label><div class="val red" id="dm-expense">₹0</div></div>
+      <div class="stat-card" style="border-color:#1a73e8"><label>माह लाभ / Month Profit</label><div class="val" id="dm-profit">₹0</div></div>
+    </div>
+  </div></div>
+
+  <div class="card"><div class="card-body">
+    <h2 style="margin-bottom:12px;">🗂️ श्रेणी अनुसार खर्च / Category Expenses</h2>
+    <div id="catBars"></div>
+  </div></div>
+
+  <!-- बकाया / Pending Fees रिमाइंडर: Web WhatsApp use करेगा -->
+  <div class="card"><div class="card-body">
+    <div class="sec-header">
+      <h2>📲 बकाया / Pending Fees रिमाइंडर</h2>
+      <button class="btn btn-wa btn-sm" onclick="sendBulkReminder()">📢 सभी को / Send All WhatsApp</button>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>नाम / Name</th><th>बकाया / Due</th><th>WhatsApp</th></tr></thead>
+      <tbody id="dueTbl"><tr><td colspan="3" class="empty-state">लोड हो रहा है… / Loading…</td></tr></tbody>
+    </table></div>
+  </div></div>
+
+  <!-- शीघ्र समाप्त: Mobile column हटाया नहीं क्योंकि यह expiry section है, change not requested -->
+  <div class="card"><div class="card-body">
+    <h2 style="margin-bottom:12px;">⚠️ शीघ्र समाप्त / Expiring Soon</h2>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>नाम / Name</th><th>समाप्ति / Expiry</th><th>स्थिति / Status</th></tr></thead>
+      <tbody id="expireTbl"><tr><td colspan="3" class="empty-state">लोड हो रहा है… / Loading…</td></tr></tbody>
+    </table></div>
+  </div></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MEMBERS PAGE
+═══════════════════════════════════════════ -->
+<div class="page" id="p-members">
+  <div class="sec-header">
+    <h2>👥 सदस्य / Members सूची</h2>
+    <button class="btn btn-primary" onclick="openAddMember()">＋ नया सदस्य / Add Member</button>
+  </div>
+  <div class="search-row">
+    <input type="text" id="memberSearch" placeholder="नाम / Name या Mobile खोजें…" oninput="renderMembers()"/>
+    <select id="memberFilter" onchange="renderMembers()">
+      <option value="">सभी / All</option>
+      <option value="active">सक्रिय / Active</option>
+      <option value="disabled">निष्क्रिय / Inactive</option>
+    </select>
+  </div>
+  <div id="membersTbl"><p class="empty-state">लोड हो रहा है… / Loading…</p></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FEES PAGE
+═══════════════════════════════════════════ -->
+<div class="page" id="p-fees">
+  <div class="sec-header">
+    <h2>💰 फीस / Fees प्रबंधन</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-green" onclick="openCollectFee('monthly')">＋ मासिक / Monthly Fee</button>
+      <button class="btn btn-orange" onclick="openCollectFee('baki')">💸 बाकी / Pending Fee</button>
+    </div>
+  </div>
+  <!-- Filter: Month के हिसाब से (जिस month fees जमा की) -->
+  <div class="search-row">
+    <input type="text" id="feeSearch" placeholder="नाम / Name या Receipt खोजें…" oninput="renderFees()"/>
+    <input type="month" id="feeMonth" onchange="renderFees()"/>
+    <button class="btn btn-outline btn-sm" onclick="document.getElementById('feeMonth').value='';renderFees()">सभी / Show All</button>
+  </div>
+  <!-- Fees cards -->
+  <div id="feesTbl"><p class="empty-state">लोड हो रहा है… / Loading…</p></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     EXPENSES PAGE
+═══════════════════════════════════════════ -->
+<div class="page" id="p-expenses">
+  <div class="sec-header">
+    <h2>📊 खर्च / Expenses प्रबंधन</h2>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-orange" onclick="openAddExpense()">＋ खर्च जोड़ें / Add Expense</button>
+      <button class="btn btn-outline" onclick="exportExpensesPDF()">📥 Export PDF</button>
+    </div>
+  </div>
+  <div class="search-row">
+    <input type="month" id="expMonth" onchange="renderExpenses()"/>
+    <select id="expCatFilter" onchange="renderExpenses()">
+      <option value="">सभी श्रेणी / All Categories</option>
+      <option>बिजली</option><option>किराया</option><option>वेतन</option>
+      <option>रखरखाव</option><option>सफाई</option><option>अन्य</option>
+    </select>
+  </div>
+  <div class="dash-grid" style="margin-bottom:12px;">
+    <div class="stat-card orange"><label>माह खर्च / Month Total / Total Expense</label><div class="val orange" id="exp-month-total">₹0</div></div>
+    <div class="stat-card red"><label>Top Category</label><div class="val" id="exp-top-cat" style="font-size:18px;">—</div></div>
+    <div class="stat-card"><label>कुल / Total Records</label><div class="val" id="exp-count">0</div></div>
+  </div>
+  <div class="card"><div class="tbl-wrap"><table>
+    <thead><tr><th>ID</th><th>तारीख / Date</th><th>श्रेणी / Category</th><th>विवरण / Details</th><th>राशि / Amount</th><th>भुगतान / Payment</th><th>नोट / Note</th><th>कार्य / Action</th></tr></thead>
+    <tbody id="expensesTbl"><tr><td colspan="8" class="empty-state">लोड हो रहा है… / Loading…</td></tr></tbody>
+  </table></div></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SEAT ALLOTMENT PAGE
+═══════════════════════════════════════════ -->
+<div class="page" id="p-seats">
+  <div class="sec-header">
+    <h2>🪑 सीट / Seats आवंटन</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="openSeatAllot()">＋ सीट दें / Allot Seat</button>
+      <button class="btn btn-green" onclick="copyPrevMonthSeats()">📋 पिछले माह की Seats Copy करें</button>
+    </div>
+  </div>
+
+  <!-- Month filter + Status -->
+  <div class="search-row" style="margin-bottom:12px;">
+    <input type="month" id="seatMonth" onchange="loadSeats()"/>
+    <button class="btn btn-outline btn-sm" onclick="loadSeats()">🔄 अपडेट / Update</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="dash-grid" style="margin-bottom:16px;">
+    <div class="stat-card green"><label>आवंटित / Allotted</label><div class="val green" id="seat-allotted">0</div></div>
+    <div class="stat-card"><label>खाली / Empty Seats</label><div class="val" id="seat-empty">30</div></div>
+    <div class="stat-card orange"><label>Non-Seater</label><div class="val" id="seat-nonseater">0</div></div>
+  </div>
+
+  <!-- Seat Grid Visual -->
+  <div class="card card-body" style="margin-bottom:16px;">
+    <div style="font-size:14px;font-weight:700;margin-bottom:12px;">📊 सीट स्थिति / Seat Status (This Month)</div>
+    <div id="seatGrid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;"></div>
+    <div style="display:flex;gap:16px;margin-top:12px;font-size:12px;">
+      <span><span style="display:inline-block;width:14px;height:14px;background:#e6f4ea;border-radius:3px;border:1px solid #1e8e3e;"></span> खाली</span>
+      <span><span style="display:inline-block;width:14px;height:14px;background:#fce8e6;border-radius:3px;border:1px solid #d93025;"></span> व्यस्त</span>
+      <span><span style="display:inline-block;width:14px;height:14px;background:#e8f0fe;border-radius:3px;border:1px solid #1a73e8;"></span> आंशिक</span>
+    </div>
+  </div>
+
+  <!-- Allotment List -->
+  <div class="card">
+    <div style="padding:12px 16px;font-weight:700;font-size:14px;">📋 आवंटन सूची / Allotment List</div>
+    <div id="seatsTbl"><p class="empty-state">लोड हो रहा है… / Loading…</p></div>
+  </div>
+</div>
+
+<!-- MODAL: SEAT ALLOTMENT -->
+<div class="overlay" id="modalSeatAllot">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-header">
+      <h3 id="seatModalTitle">🪑 सीट / Seats आवंटन</h3>
+      <button class="close-btn" onclick="closeModal('modalSeatAllot')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <!-- Student -->
+        <div class="full"><label class="lbl">विद्यार्थी / Student *</label>
+          <select class="inp" id="sa-member">
+            <option value="">— विद्यार्थी / Select Student —</option>
+          </select>
+        </div>
+        <!-- Seat Number -->
+        <div><label class="lbl">सीट नंबर / Seat Number *</label>
+          <select class="inp" id="sa-seat">
+            <option value="">— सीट चुनें / Select Seat —</option>
+            <option value="Non-Seater">🚫 Non-Seater</option>
+          </select>
+        </div>
+        <!-- Time Slot -->
+        <div class="full"><label class="lbl">Time Slot *</label>
+          <select class="inp" id="sa-slot">
+            <option value="">— Slot चुनें —</option>
+            <optgroup label="🌅 Early Morning (3 घंटे)">
+              <option value="1|6:00 AM – 9:00 AM|3 hrs">Slot 1 — 6:00 AM – 9:00 AM (3 hrs)</option>
+              <option value="2|6:00 AM – 9:30 AM|3.5 hrs">Slot 2 — 6:00 AM – 9:30 AM (3.5 hrs)</option>
+              <option value="3|6:30 AM – 9:30 AM|3 hrs">Slot 3 — 6:30 AM – 9:30 AM (3 hrs)</option>
+            </optgroup>
+            <optgroup label="☀️ Morning (5 घंटे)">
+              <option value="4|6:00 AM – 11:00 AM|5 hrs">Slot 4 — 6:00 AM – 11:00 AM (5 hrs)</option>
+              <option value="5|7:00 AM – 12:00 PM|5 hrs">Slot 5 — 7:00 AM – 12:00 PM (5 hrs)</option>
+              <option value="6|8:00 AM – 1:00 PM|5 hrs">Slot 6 — 8:00 AM – 1:00 PM (5 hrs)</option>
+            </optgroup>
+            <optgroup label="🕛 Day (10 घंटे)">
+              <option value="7|6:00 AM – 4:00 PM|10 hrs">Slot 7 — 6:00 AM – 4:00 PM (10 hrs)</option>
+              <option value="8|7:00 AM – 5:00 PM|10 hrs">Slot 8 — 7:00 AM – 5:00 PM (10 hrs)</option>
+              <option value="9|8:00 AM – 6:00 PM|10 hrs">Slot 9 — 8:00 AM – 6:00 PM (10 hrs)</option>
+              <option value="10|9:00 AM – 7:00 PM|10 hrs">Slot 10 — 9:00 AM – 7:00 PM (10 hrs)</option>
+              <option value="21|9:00 AM – 6:00 PM|9 hrs">Slot 21 — 9:00 AM – 6:00 PM (9 hrs)</option>
+              <option value="22|9:30 AM – 6:00 PM|8.5 hrs">Slot 22 — 9:30 AM – 6:00 PM (8.5 hrs)</option>
+              <option value="23|10:00 AM – 6:00 PM|8 hrs">Slot 23 — 10:00 AM – 6:00 PM (8 hrs)</option>
+              <option value="24|10:30 AM – 6:00 PM|7.5 hrs">Slot 24 — 10:30 AM – 6:00 PM (7.5 hrs)</option>
+              <option value="25|11:00 AM – 6:00 PM|7 hrs">Slot 25 — 11:00 AM – 6:00 PM (7 hrs)</option>
+            </optgroup>
+            <optgroup label="🌤️ Afternoon (5 घंटे)">
+              <option value="11|12:00 PM – 5:00 PM|5 hrs">Slot 11 — 12:00 PM – 5:00 PM (5 hrs)</option>
+              <option value="12|1:00 PM – 6:00 PM|5 hrs">Slot 12 — 1:00 PM – 6:00 PM (5 hrs)</option>
+              <option value="13|2:00 PM – 7:00 PM|5 hrs">Slot 13 — 2:00 PM – 7:00 PM (5 hrs)</option>
+            </optgroup>
+            <optgroup label="🌆 Evening (3 घंटे)">
+              <option value="14|6:00 PM – 9:00 PM|3 hrs">Slot 14 — 6:00 PM – 9:00 PM (3 hrs)</option>
+              <option value="15|7:00 PM – 10:00 PM|3 hrs">Slot 15 — 7:00 PM – 10:00 PM (3 hrs)</option>
+              <option value="16|8:00 PM – 11:00 PM|3 hrs">Slot 16 — 8:00 PM – 11:00 PM (3 hrs)</option>
+            </optgroup>
+            <optgroup label="🌙 Night/Long (12 घंटे)">
+              <option value="17|6:00 AM – 6:00 PM|12 hrs">Slot 17 — 6:00 AM – 6:00 PM (12 hrs)</option>
+              <option value="18|7:00 AM – 7:00 PM|12 hrs">Slot 18 — 7:00 AM – 7:00 PM (12 hrs)</option>
+              <option value="19|11:00 AM – 11:00 PM|12 hrs">Slot 19 — 11:00 AM – 11:00 PM (12 hrs)</option>
+            </optgroup>
+            <optgroup label="📅 Full Day">
+              <option value="20|6:00 AM – 11:00 PM|17 hrs">Slot 20 — 6:00 AM – 11:00 PM (Full Day 17 hrs)</option>
+            </optgroup>
+          </select>
+        </div>
+        <!-- Conflict warning -->
+        <div class="full" id="seatConflictWarn" style="display:none;padding:10px 12px;background:#fce8e6;border-radius:8px;font-size:13px;color:#d93025;font-weight:600;"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalSeatAllot')">रद्द / Cancel</button>
+      <button class="btn btn-primary" onclick="saveSeatAllot()">💾 सहेजें / Save / Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: COPY SEATS -->
+<div class="overlay" id="modalCopySeats">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <h3>📋 Seats Copy करें</h3>
+      <button class="close-btn" onclick="closeModal('modalCopySeats')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:12px;" id="copySeatsInfo"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <label style="font-size:12px;font-weight:600;color:var(--text2);">सभी Select / Deselect करें</label>
+        <input type="checkbox" id="copySelectAll" onchange="toggleAllCopySeats(this.checked)"
+          style="width:18px;height:18px;cursor:pointer;"/>
+      </div>
+      <div id="copySeatsListWrap" style="max-height:340px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:#f8f9fa;">
+              <th style="padding:8px;text-align:center;width:40px;">✓</th>
+              <th style="padding:8px;text-align:left;">नाम / Name</th>
+              <th style="padding:8px;text-align:center;">सीट</th>
+              <th style="padding:8px;text-align:center;">Slot</th>
+            </tr>
+          </thead>
+          <tbody id="copySeatsListBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalCopySeats')">रद्द / Cancel</button>
+      <button class="btn btn-green" onclick="confirmCopySeats()">📋 Selected Copy करें</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     REPORTS PAGE
+═══════════════════════════════════════════ -->
+<div class="page" id="p-reports">
+  <div class="sec-header">
+    <h2>📈 वित्तीय रिपोर्ट / Financial Report</h2>
+    <div class="month-sel">
+      <input type="month" id="repMonth" onchange="loadReport()"/>
+      <button class="btn btn-outline btn-sm" onclick="downloadReportPDF()">📥 PDF</button>
+      <button class="btn btn-outline btn-sm" onclick="printReport()">🖨️ प्रिंट</button>
+    </div>
+  </div>
+  <div class="dash-grid">
+    <div class="stat-card green"><label>कुल आय / Total Income</label><div class="val green" id="rep-income">—</div></div>
+    <div class="stat-card red"><label>कुल खर्च / Total Expense</label><div class="val red" id="rep-expense">—</div></div>
+    <div class="stat-card" style="border-color:#1a73e8"><label>शुद्ध लाभ / Net Profit/हानि</label><div class="val" id="rep-profit">—</div></div>
+    <div class="stat-card yellow"><label>बकाया</label><div class="val" id="rep-due" style="color:#f9a825;">—</div></div>
+  </div>
+  <div class="card"><div class="card-body">
+    <h3 style="margin-bottom:12px;">श्रेणी अनुसार खर्च</h3>
+    <div id="repCatDetail"></div>
+  </div></div>
+  <div class="card"><div class="card-body">
+    <h3 style="margin-bottom:12px;">माह की फीस</h3>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>रसीद</th><th>नाम</th><th>महीना</th><th>राशि</th><th>तारीख</th></tr></thead>
+      <tbody id="repFeesTbl"></tbody>
+    </table></div>
+  </div></div>
+  <div class="card"><div class="card-body">
+    <h3 style="margin-bottom:12px;">माह के खर्च</h3>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>तारीख</th><th>श्रेणी</th><th>विवरण</th><th>राशि</th></tr></thead>
+      <tbody id="repExpTbl"></tbody>
+    </table></div>
+  </div></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODAL: ADD / EDIT MEMBER
+     Updated: Mobile field ADDED, Join Date (full date), Sadsyata type = custom text,
+     Mid-month fee auto-calc, Admission form download
+═══════════════════════════════════════════ -->
+<div class="overlay" id="modalAddMember">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="memberModalTitle">नया सदस्य / Add New Member</h3>
+      <button class="close-btn" onclick="closeModal('modalAddMember')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <!-- Member ID + Sadsyata type -->
+        <div><label class="lbl">सदस्य ID / Member ID (Auto)</label><input class="inp" id="m-id" readonly style="background:#f8f9fa;color:var(--primary);font-weight:700;"/></div>
+        <div><label class="lbl">सदस्यता प्रकार / Membership Type *</label>
+          <input class="inp" id="m-type" placeholder="जैसे: मासिक, त्रैमासिक, वार्षिक..." list="memberTypeList"/>
+          <datalist id="memberTypeList">
+            <option value="मासिक"><option value="त्रैमासिक"><option value="अर्धवार्षिक"><option value="वार्षिक">
+          </datalist>
+        </div>
+
+        <!-- नाम — Auto suggest from Form Sheet -->
+        <div class="full"><label class="lbl">विद्यार्थी का नाम / Student Name *</label>
+          <div style="position:relative;">
+            <div style="display:flex;gap:6px;align-items:center;">
+              <input class="inp" id="m-name" placeholder="नाम टाइप करें — Form से auto-fill होगा" autocomplete="off"
+                oninput="onMemberNameInput(this.value)" style="flex:1;"/>
+              <button type="button" onclick="onMemberNameInput(document.getElementById('m-name').value)" 
+                style="padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:16px;" 
+                title="Form से दोबारा खोजें">🔄</button>
+            </div>
+            <div id="formSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow);z-index:500;max-height:220px;overflow-y:auto;"></div>
+          </div>
+        </div>
+
+        <!-- पिता + माता -->
+        <div><label class="lbl">पिता का नाम / Father's Name</label><input class="inp" id="m-father" placeholder="पिता का नाम / Father's Name"/></div>
+        <div><label class="lbl">माता का नाम / Mother's Name</label><input class="inp" id="m-mother" placeholder="माता का नाम / Mother's Name"/></div>
+
+        <!-- DOB + Gender -->
+        <div><label class="lbl">जन्म तिथि / Date of Birth</label><input class="inp" id="m-dob" type="date"/></div>
+        <div><label class="lbl">लिंग / Gender</label>
+          <select class="inp" id="m-gender">
+            <option value="">— चुनें —</option>
+            <option value="Male/ पुरूष">Male / पुरूष</option>
+            <option value="Female/ महिला">Female / महिला</option>
+          </select>
+        </div>
+
+        <!-- Mobile + Email -->
+        <div><label class="lbl">मोबाइल / Mobile Number</label><input class="inp" id="m-mobile" type="tel" placeholder="10 अंक" maxlength="10"/></div>
+        <div><label class="lbl">ईमेल / Email</label><input class="inp" id="m-email" type="email" placeholder="email@example.com"/></div>
+
+        <!-- Address + City -->
+        <div class="full"><label class="lbl">पूरा पता / Full Address</label><textarea class="inp" id="m-address" rows="2"></textarea></div>
+        <div><label class="lbl">शहर / City / District</label><input class="inp" id="m-city" placeholder="जैसे: Hanumangarh"/></div>
+        <div><label class="lbl">राज्य</label><input class="inp" id="m-state" placeholder="जैसे: Rajasthan"/></div>
+
+        <!-- Qualification -->
+        <div class="full"><label class="lbl">उच्चतम शिक्षा / Highest Qualification</label>
+          <select class="inp" id="m-qualification" onchange="toggleQualCustom(this.value)">
+            <option value="">— चुनें —</option>
+            <option>10th</option><option>12th</option><option>ITI / Diploma</option>
+            <option>Graduation (BA/BSc/BCom/BCA/BTech)</option>
+            <option>Post Graduation (MA/MSc/MCom/MTech)</option>
+            <option>B.Ed / D.El.Ed / NTT</option>
+            <option value="__custom__">Other (खुद लिखें)</option>
+          </select>
+          <input class="inp" id="m-qualification-custom" placeholder="अपनी qualification लिखें..." style="display:none;margin-top:6px;"/>
+        </div>
+
+        <!-- Join Date + Fee -->
+        <div><label class="lbl">ज्वाइन तारीख / Join Date *</label><input class="inp" id="m-join" type="date" onchange="onJoinDateChange()"/></div>
+        <div><label class="lbl">कुल फीस / Total Fee ₹</label><input class="inp" id="m-totalfee" type="number" placeholder="0" oninput="calcAdmissionFee()"/></div>
+        <div><label class="lbl">पहले माह की फीस / First Month Fee ₹ (Auto)</label><input class="inp" id="m-firstfee" type="number" readonly style="background:#f8f9fa;color:var(--green);font-weight:700;"/></div>
+
+        <!-- Visit Duration (Optional) -->
+        <div class="full">
+          <label class="lbl">पुस्तकालय आने की अवधि / Visit Duration (Optional)</label>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+            <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:180px;">
+              <span style="font-size:12px;color:var(--text2);white-space:nowrap;">दिनांक से / From Date:</span>
+              <input class="inp" id="m-visitFrom" type="date" style="flex:1;"/>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:180px;">
+              <span style="font-size:12px;color:var(--text2);white-space:nowrap;">दिनांक तक / To Date:</span>
+              <input class="inp" id="m-visitTo" type="date" style="flex:1;"/>
+            </div>
+          </div>
+        </div>
+        <div class="full">
+          <div id="midMonthCalcBanner" style="display:none;padding:8px 12px;background:#e8f0fe;border-radius:8px;font-size:12px;color:#1a73e8;margin-bottom:8px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalAddMember')">रद्द / Cancel</button>
+      <button class="btn btn-green" id="downloadAdmissionBtn" onclick="downloadAdmissionForm()" style="display:none;">📄 Form Download</button>
+      <button class="btn btn-primary" onclick="saveMember()">💾 सहेजें / Save / Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODAL: REACTIVATE MEMBER (Disable → Active popup)
+═══════════════════════════════════════════ -->
+<div class="overlay" id="modalReactivate">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <h3>🔄 सदस्य पुनः सक्रिय / Reactivate Member</h3>
+      <button class="close-btn" onclick="closeModal('modalReactivate')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;margin-bottom:16px;color:var(--text2);">
+        <strong id="reactivateMemberName"></strong> को किस महीने से फीस शुरू करें?
+      </p>
+      <label class="lbl">फीस किस महीने से / Fee Start Month *</label>
+      <input class="inp" id="reactivateMonth" type="month"/>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalReactivate')">रद्द / Cancel</button>
+      <button class="btn btn-green" onclick="confirmReactivate()">✅ सक्रिय / Activate</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: MID-MONTH DISABLE -->
+<div class="overlay" id="modalMidDisable">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <h3>🚫 सदस्य निष्क्रिय / Mid-Month Disable</h3>
+      <button class="close-btn" onclick="closeModal('modalMidDisable')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;margin-bottom:16px;color:var(--text2);">
+        <strong id="midDisableName"></strong>
+      </p>
+
+      <!-- Month info -->
+      <div style="background:var(--primary-light);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:13px;">
+        📅 चालू माह: <strong id="midDisableMonth"></strong> &nbsp;|&nbsp;
+        💰 मासिक फीस: <strong id="midDisableTotalFee"></strong>
+      </div>
+
+      <!-- Days attended -->
+      <label class="lbl">कितने दिन आया / Days Attended *</label>
+      <input class="inp" id="midDisableDays" type="number" min="1" max="31" placeholder="जैसे: 10"
+        oninput="calcMidDisableFee()"/>
+
+      <!-- Auto calculated fee -->
+      <div id="midDisableCalcBox" style="display:none;margin-top:14px;background:var(--green-light);border:1px solid var(--green);border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.8;">
+        <div>📊 <strong id="midDisableFormula"></strong></div>
+        <div style="margin-top:6px;">✅ देय राशि / Fee Payable: <strong style="color:var(--green);font-size:16px;" id="midDisablePayable">₹0</strong></div>
+        <div>💸 नई बकाया / New Due: <strong style="color:var(--red);" id="midDisableNewDue">₹0</strong></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalMidDisable')">रद्द / Cancel</button>
+      <button class="btn btn-orange" onclick="confirmMidDisable()">🚫 Disable करें</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODAL: COLLECT FEE
+     Changes: field order updated, बाकी फीस auto-calculate
+═══════════════════════════════════════════ -->
+<div class="overlay" id="modalCollectFee">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="feeModalTitle">💰 फीस / Fees जमा करें</h3>
+      <button class="close-btn" onclick="closeModal('modalCollectFee')">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Fee Type Info Banner -->
+      <div id="feeTypeBanner" style="padding:8px 12px;border-radius:8px;margin-bottom:12px;font-size:13px;font-weight:600;"></div>
+      <div class="form-grid">
+        <!-- Field order: 1. सदस्य, 2. महीना, 3. जमा राशि, (बाकी auto), 4. Discount, 5. Note -->
+        <div class="full"><label class="lbl">सदस्य चुनें / Select Member *</label>
+          <select class="inp" id="fee-member" onchange="onFeeSelect()"><option value="">— सदस्य चुनें / Select Member —</option></select>
+        </div>
+        <div><label class="lbl">महीना / Month *</label><input class="inp" id="fee-month" type="month"/></div>
+        <div><label class="lbl">जमा राशि / Amount ₹ *</label><input class="inp" id="fee-amount" type="number" placeholder="0" oninput="calcFeeDue()"/></div>
+        <!-- बाकी फीस: AUTO show होगी admission की total fee के हिसाब से -->
+        <div><label class="lbl">बाकी फीस / Pending Fee ₹ (Auto)</label><input class="inp" id="fee-due-show" readonly style="background:#f8f9fa;"/></div>
+        <div><label class="lbl">नया बाकी / New Due ₹</label><input class="inp" id="fee-new-due" type="number" readonly style="background:#f8f9fa;"/></div>
+        <div><label class="lbl">छूट / Discount ₹</label><input class="inp" id="fee-discount" type="number" placeholder="0" oninput="calcFeeDue()"/></div>
+        <div class="full"><label class="lbl">नोट</label><input class="inp" id="fee-note" placeholder="वैकल्पिक"/></div>
+        <div><label class="lbl">भुगतान विधि / Payment Mode *</label>
+          <select class="inp" id="fee-paymode" onchange="toggleUTR()">
+            <option value="नकद">नकद / Cash</option>
+            <option value="UPI">UPI</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Cheque">Cheque</option>
+          </select>
+        </div>
+        <div><label class="lbl">UTR / Transaction Number</label>
+          <input class="inp" id="fee-utr" placeholder="UPI/Bank UTR ya Transaction ID" style="display:none;"/>
+        </div>
+      </div>
+      <!-- Mid-month admission suggestion banner -->
+      <div id="midMonthBanner" style="display:none;margin-top:10px;padding:8px 12px;background:#e8f0fe;border-radius:8px;font-size:12px;color:#1a73e8;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalCollectFee')">रद्द / Cancel</button>
+      <button class="btn btn-green" onclick="saveFee()">✅ जमा करें / Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODAL: ADD EXPENSE
+═══════════════════════════════════════════ -->
+<div class="overlay" id="modalAddExpense">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>📊 खर्च / Expenses जोड़ें</h3>
+      <button class="close-btn" onclick="closeModal('modalAddExpense')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div><label class="lbl">तारीख / Date *</label><input class="inp" id="exp-date" type="date"/></div>
+        <div><label class="lbl">श्रेणी / Category *</label>
+          <select class="inp" id="exp-cat">
+            <option>बिजली</option><option>किराया</option><option>वेतन</option>
+            <option>रखरखाव</option><option>सफाई</option><option>अन्य</option>
+          </select>
+        </div>
+        <div class="full"><label class="lbl">विवरण / Description *</label><input class="inp" id="exp-desc" placeholder="खर्च का विवरण"/></div>
+        <div><label class="lbl">राशि / Amount ₹ *</label><input class="inp" id="exp-amt" type="number" placeholder="0"/></div>
+        <div><label class="lbl">भुगतान / Payment Method</label>
+          <select class="inp" id="exp-pay">
+            <option>नकद</option><option>UPI</option><option>बैंक ट्रांसफर</option><option>चेक</option>
+          </select>
+        </div>
+        <div class="full"><label class="lbl">नोट</label><textarea class="inp" id="exp-note" rows="2"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalAddExpense')">रद्द / Cancel</button>
+      <button class="btn btn-orange" onclick="saveExpense()">💾 सहेजें / Save / Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODAL: RECEIPT
+     Changes: Mobile REMOVED, fields reordered per spec,
+     अध्यक्ष के हस्ताक्षर added, Download button added
+═══════════════════════════════════════════ -->
+<div class="overlay" id="modalReceipt">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-header">
+      <h3>🧾 रसीद</h3>
+      <button class="close-btn" onclick="closeModal('modalReceipt')">✕</button>
+    </div>
+    <div class="modal-body receipt-print" id="receiptContent"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalReceipt')">बंद / Close</button>
+      <button class="btn btn-green" onclick="downloadReceipt()">🖼️ Image</button>
+      <button class="btn btn-wa" onclick="shareReceiptWA()">📲 WhatsApp</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨️ प्रिंट</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EXPENSE RECEIPT -->
+<div class="overlay" id="modalExpReceipt">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-header">
+      <h3>🧾 खर्च रसीद</h3>
+      <button class="close-btn" onclick="closeModal('modalExpReceipt')">✕</button>
+    </div>
+    <div class="modal-body receipt-print" id="expReceiptContent"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalExpReceipt')">बंद / Close</button>
+      <button class="btn btn-outline" onclick="downloadExpReceiptPDF()">⬇️ PDF</button>
+      <button class="btn btn-orange" onclick="window.print()">🖨️ प्रिंट</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SETTINGS -->
+<div class="overlay" id="modalSettings">
+  <div class="modal" style="max-width:460px;">
+    <div class="modal-header">
+      <h3>⚙️ Script URL सेटिंग / Settings</h3>
+      <button class="close-btn" onclick="closeModal('modalSettings')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">
+        Google Apps Script deploy करने के बाद मिला URL यहाँ डालें।
+      </p>
+      <label class="lbl">Script URL *</label>
+      <input class="inp" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:10px;"/>
+      <div id="urlStatus" style="font-size:12px;margin-top:4px;"></div>
+
+      <!-- Danger Zone -->
+      <div style="margin-top:20px;border-top:2px dashed #dadce0;padding-top:16px;">
+        <div style="font-size:12px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">⚠️ Danger Zone</div>
+
+        <div style="background:#fce8e6;border-radius:10px;padding:14px;">
+          <div style="font-size:13px;font-weight:600;color:var(--red);margin-bottom:4px;">🗑️ सारा डेटा / Clear All Data</div>
+          <div style="font-size:12px;color:#666;margin-bottom:10px;">Google Sheet की Members, Fees और Expenses sheet का सारा डेटा हमेशा के लिए हट जाएगा।</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-red btn-sm" onclick="clearSheetData('Members')">👥 Members साफ करें</button>
+            <button class="btn btn-red btn-sm" onclick="clearSheetData('Fees')">💰 Fees साफ करें</button>
+            <button class="btn btn-red btn-sm" onclick="clearSheetData('Expenses')">📊 Expenses साफ करें</button>
+            <button class="btn btn-red" style="background:#7f0000;" onclick="clearSheetData('ALL')">🔥 सब कुछ साफ करें</button>
+          </div>
+          <div id="clearStatus" style="font-size:12px;margin-top:8px;min-height:16px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalSettings')">रद्द / Cancel</button>
+      <button class="btn btn-primary" onclick="saveScriptUrl()">💾 URL सहेजें / Save URL</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── लॉगिन / Auth ───
+const CORRECT_PASSWORD = "svpk2024";
+let failCount = 0, lockUntil = 0;
+
+function checkLogin() {
+  const now = Date.now();
+  if (now < lockUntil) {
+    document.getElementById("loginError").textContent = `⏳ ${Math.ceil((lockUntil-now)/1000)} सेकंड रुकें...`;
+    return;
+  }
+  const pass = document.getElementById("loginPass").value;
+  if (pass === CORRECT_PASSWORD) {
+    failCount = 0;
+    sessionStorage.setItem("libAuth","yes");
+    document.getElementById("loginScreen").style.display = "none";
+    initDates();
+    loadAll();
+  } else {
+    failCount++;
+    document.getElementById("loginPass").value = "";
+    if (failCount >= 3) {
+      lockUntil = Date.now() + 30000; failCount = 0;
+      document.getElementById("loginError").textContent = "❌ 3 बार गलत! 30 सेकंड लॉक।";
+      setTimeout(()=>{ document.getElementById("loginError").textContent=""; }, 30000);
+    } else {
+      document.getElementById("loginError").textContent = `❌ गलत पासवर्ड! (${3-failCount} मौके बचे)`;
+    }
+  }
+}
+
+function logout() {
+  if (!confirm("लॉगआउट करना चाहते हैं?")) return;
+  sessionStorage.removeItem("libAuth");
+  document.getElementById("loginPass").value = "";
+  document.getElementById("loginError").textContent = "";
+  document.getElementById("loginScreen").style.display = "flex";
+}
+
+// ─── Script URL & Global State ───
+const INSTALLED_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYR778nXzC0_3fxdRNjmiQUbeoqcAdhzLBORWi0AmIsRkZaStESHhsTeVGi2EUOscZ/exec";
+// v3.2 — Always use hardcoded URL, ignore localStorage
+localStorage.setItem("scriptURL", INSTALLED_SCRIPT_URL);
+let SCRIPT_URL = INSTALLED_SCRIPT_URL;
+let members = [], fees = [], expenses = [], summary = {};
+let currentFeeType = 'monthly'; // 'monthly' or 'baki'
+let lastReceiptData = null; // WhatsApp share ke liye
+let editingMemberId = null;
+let reactivatingMemberId = null; // Disable → Active popup ke liye
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (sessionStorage.getItem("libAuth") === "yes") {
+    document.getElementById("loginScreen").style.display = "none";
+    initDates();
+    loadAll();
+  }
+});
+
+function initDates() {
+  const today = new Date().toISOString().slice(0,7);
+  ["dashMonth","feeMonth","expMonth","repMonth","seatMonth"].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = today;
+  });
+}
+
+function saveScriptUrl() {
+  const url = document.getElementById("scriptUrlInput").value.trim();
+  if (!url.startsWith("https://script.google.com")) {
+    document.getElementById("urlStatus").innerHTML = `<span style="color:var(--red);">❌ सही URL डालें</span>`;
+    return;
+  }
+  SCRIPT_URL = url;
+  localStorage.setItem("scriptURL", url);
+  document.getElementById("urlStatus").innerHTML = `<span style="color:var(--green);">✅ सहेज लिया!</span>`;
+  setTimeout(() => { closeModal('modalSettings'); loadAll(); }, 800);
+}
+
+// ─── API Call ───
+async function api(body) {
+  const r = await fetch(SCRIPT_URL, {
+    method:"POST",
+    body: JSON.stringify(body),
+    headers: {"Content-Type":"text/plain"},
+    redirect: "follow"
+  });
+  const d = await r.json();
+  if (!d.success && d.error) throw new Error(d.error);
+  // searchFormData fix
+  if (body.action === "searchFormData") return d.result || d;
+  return d.result !== undefined ? d.result : d;
+}
+
+// ─── सभी डेटा लोड ───
+async function loadAll() {
+  showToast("डेटा लोड हो रहा है… / Loading…");
+  try {
+    const [mRes, fRes, eRes] = await Promise.all([
+      api({action:"getAll"}),
+      api({action:"getAllFees"}),
+      api({action:"getExpenses", filter:{}})
+    ]);
+    members  = mRes.members  || [];
+    fees     = fRes.fees     || [];
+    expenses = eRes.expenses || [];
+
+    // ── Auto Renew: expire ho chuke active members ko next month admit karo ──
+    await autoRenewExpiredMembers();
+
+    const month = document.getElementById("dashMonth").value;
+    summary = await api({action:"getSummary", month});
+    renderDashboard(); renderMembers(); renderFees(); renderExpenses();
+    showToast("✅ डेटा अपडेट हो गया");
+  } catch(e) { showToast("❌ त्रुटि: " + e.message); }
+}
+
+// ─── Auto Renew Expired Members ───
+// Jab member ka expiry < aaj ho aur status active ho → next month ke liye renew karo
+async function autoRenewExpiredMembers() {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  // Membership type ke hisaab se months
+  function expiryMonths(type) {
+    const t = String(type||"").toLowerCase();
+    if (t.includes("वार्षिक") || t.includes("annual") || t.includes("yearly")) return 12;
+    if (t.includes("अर्ध") || t.includes("half")) return 6;
+    if (t.includes("त्रैमासिक") || t.includes("quarterly")) return 3;
+    return 1;
+  }
+
+  const toRenew = members.filter(m => {
+    if ((m.status||"active") !== "active") return false;
+    if (!m.expiry) return false;
+    const exp = new Date(m.expiry);
+    if (isNaN(exp)) return false;
+    exp.setHours(0,0,0,0);
+    return exp < today;
+  });
+
+  if (!toRenew.length) return;
+
+  showToast(`🔄 ${toRenew.length} सदस्य auto-renew हो रहे हैं…`);
+
+  for (const m of toRenew) {
+    try {
+      // New expiry: पुरानी expiry से आगे बढ़ाओ (today से नहीं, expiry से — fair renewal)
+      const oldExpiry = new Date(m.expiry);
+      oldExpiry.setHours(0,0,0,0);
+      const months = expiryMonths(m.membershipType);
+      const newExpiry = new Date(oldExpiry);
+      newExpiry.setMonth(newExpiry.getMonth() + months);
+      const newExpiryStr = newExpiry.toISOString().slice(0,10);
+
+      // joinMonth = new expiry start month (oldExpiry ka month)
+      const newJoinMonth = oldExpiry.toISOString().slice(0,7);
+
+      // dueFee: current due + totalFee (naya month add)
+      const currentDue = Number(m.dueFee||0);
+      const totalFee   = Number(m.totalFee||0);
+      const newDue     = currentDue + totalFee;
+
+      await api({action:"updateMember", member:{
+        id:             m.id,
+        status:         "active",
+        joinMonth:      newJoinMonth,
+        expiry:         newExpiryStr,
+        dueFee:         newDue,
+        // baaki fields unchanged
+        name:           m.name,
+        fatherName:     m.fatherName,
+        motherName:     m.motherName,
+        mobile:         m.mobile,
+        email:          m.email,
+        dob:            m.dob,
+        gender:         m.gender,
+        joinDate:       m.joinDate,
+        totalFee:       m.totalFee,
+        firstMonthFee:  m.firstMonthFee,
+        address:        m.address,
+        city:           m.city,
+        state:          m.state,
+        qualification:  m.qualification,
+        membershipType: m.membershipType,
+        visitFrom:      m.visitFrom,
+        visitTo:        m.visitTo
+      }});
+
+      // Local members array bhi update karo (re-render ke liye)
+      m.joinMonth  = newJoinMonth;
+      m.expiry     = newExpiryStr;
+      m.dueFee     = String(newDue);
+
+    } catch(e) {
+      console.error("Auto-renew failed for", m.id, e.message);
+    }
+  }
+
+  if (toRenew.length > 0) {
+    showToast(`✅ ${toRenew.length} सदस्य अगले माह के लिए auto-renew हो गए!`);
+  }
+}
+}
+
+// ─── Page Navigation ───
+function showPage(name) {
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  document.getElementById("p-"+name).classList.add("active");
+  document.querySelectorAll(".nav button")[{dashboard:0,members:1,fees:2,expenses:3,seats:4,reports:5}[name]].classList.add("active");
+  if (name==="seats") loadSeats();
+  if (name==="reports") loadReport();
+}
+
+// ─── Helper Functions ───
+const rupee = n => "₹" + Number(n||0).toLocaleString("hi-IN");
+
+// Hindi month names for display
+const HINDI_MONTHS = ["","जनवरी","फरवरी","मार्च","अप्रैल","मई","जून","जुलाई","अगस्त","सितंबर","अक्टूबर","नवंबर","दिसंबर"];
+
+// किसी भी format को "April 2026" format में convert करें
+function monthDisplay(ym) {
+  if (!ym) return "";
+  const s = String(ym).trim();
+  const ENG = ["","January","February","March","April","May","June","July","August","September","October","November","December"];
+  let y, mo;
+  // Case 1: YYYY-MM  e.g. "2026-04"
+  let mx = s.match(/^(\d{4})-(\d{2})$/);
+  if (mx) { y = mx[1]; mo = parseInt(mx[2]); }
+  // Case 2: YYYY-MM-DD  e.g. "2026-04-15"
+  if (!y) { mx = s.match(/^(\d{4})-(\d{2})-\d{2}/); if (mx) { y = mx[1]; mo = parseInt(mx[2]); } }
+  // Case 3: DD/MM/YYYY  e.g. "15/04/2026"
+  if (!y) { mx = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/); if (mx) { y = mx[3]; mo = parseInt(mx[2]); } }
+  // Case 4: MM/YYYY  e.g. "04/2026"
+  if (!y) { mx = s.match(/^(\d{1,2})\/(\d{4})$/); if (mx) { y = mx[2]; mo = parseInt(mx[1]); } }
+  // Case 5: Date parse fallback
+  if (!y) { const d = new Date(s); if (!isNaN(d)) { y = d.getFullYear(); mo = d.getMonth()+1; } }
+  if (y && mo) return (ENG[mo] || s) + " " + y;
+  return s;
+}
+
+// किसी भी date format को "15 April 2026" format में convert करें
+function dateDisplay(dt) {
+  if (!dt) return "—";
+  const s = String(dt).trim();
+  const ENG = ["","January","February","March","April","May","June","July","August","September","October","November","December"];
+  let d, mo, y;
+  // Case 1: YYYY-MM-DD  e.g. "2026-04-15"
+  let mx = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (mx) { y = mx[1]; mo = parseInt(mx[2]); d = parseInt(mx[3]); }
+  // Case 2: DD/MM/YYYY  e.g. "15/04/2026"
+  if (!y) { mx = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/); if (mx) { d = parseInt(mx[1]); mo = parseInt(mx[2]); y = mx[3]; } }
+  // Case 3: "Sun Apr 05 2026 00:00:00 GMT+0530..." — extract directly without Date parse
+  if (!y) {
+    mx = s.match(/([A-Za-z]{3})\s+(\d{1,2})\s+(\d{4})/);
+    if (mx) {
+      const MMAP = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+      mo = MMAP[mx[1].toLowerCase()];
+      d = parseInt(mx[2]);
+      y = mx[3];
+    }
+  }
+  // Case 4: Last resort — IST-safe Date parse
+  if (!y) {
+    const dt2 = new Date(s);
+    if (!isNaN(dt2)) {
+      const ist = new Date(dt2.getTime() + (5.5 * 60 * 60 * 1000));
+      d = ist.getUTCDate(); mo = ist.getUTCMonth()+1; y = ist.getUTCFullYear();
+    }
+  }
+  if (d && mo && y) return `${d} ${ENG[mo]} ${y}`;
+  return s;
+}
+
+// किसी भी date format को "2 Apr 2026" format में convert करें
+function formatJoinDate(dt) {
+  if (!dt) return "—";
+  const s = String(dt).trim();
+  let d, mo, y;
+  let mx = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (mx) { y = mx[1]; mo = parseInt(mx[2]); d = parseInt(mx[3]); }
+  if (!y) { mx = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/); if (mx) { d = parseInt(mx[1]); mo = parseInt(mx[2]); y = mx[3]; } }
+  if (!y) { mx = s.match(/^(\d{4})-(\d{2})$/); if (mx) { y = mx[1]; mo = parseInt(mx[2]); d = 1; } }
+  if (!y) { const dt2 = new Date(s); if (!isNaN(dt2)) { d = dt2.getDate(); mo = dt2.getMonth()+1; y = dt2.getFullYear(); } }
+  if (d && mo && y) return `${String(d).padStart(2,'0')}/${String(mo).padStart(2,'0')}/${y}`;
+  return s;
+}
+
+// feeMonthStr: fee record से YYYY-MM निकालें — सभी formats handle करता है
+// Fix: GAS hi-IN locale date (15/4/2026 single digit), Sheets Date object string
+function feeMonthStr(f) {
+  const ENG_MONTHS = {jan:"01",feb:"02",mar:"03",apr:"04",may:"05",jun:"06",
+                      jul:"07",aug:"08",sep:"09",oct:"10",nov:"11",dec:"12",
+                      january:"01",february:"02",march:"03",april:"04",may:"05",june:"06",
+                      july:"07",august:"08",september:"09",october:"10",november:"11",december:"12"};
+  function parse(s) {
+    if (!s) return "";
+    s = String(s).trim().replace(/^'+/, ""); // apostrophe strip
+    // YYYY-MM exact
+    if (/^\d{4}-\d{2}$/.test(s)) return s;
+    // YYYY-MM-DD
+    let m = s.match(/^(\d{4})-(\d{2})/); if (m) return `${m[1]}-${m[2]}`;
+    // DD/MM/YYYY or D/M/YYYY (hi-IN locale single digit too)
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (m) return `${m[3]}-${String(m[2]).padStart(2,'0')}`;
+    // MM/YYYY
+    m = s.match(/^(\d{1,2})\/(\d{4})$/); if (m) return `${m[2]}-${String(m[1]).padStart(2,'0')}`;
+    // "Wed Apr 01 2026..." or "Sun Apr 05 2026 00:00:00 GMT+0530..." — day number ke saath bhi
+    m = s.match(/([A-Za-z]{3,})\s+\d{1,2}\s+(\d{4})/);
+    if (m) { const mo = ENG_MONTHS[m[1].toLowerCase()]; if (mo) return `${m[2]}-${mo}`; }
+    // "Apr 2026" or "April 2026" — bina day ke
+    m = s.match(/([A-Za-z]{3,})\s+(\d{4})/);
+    if (m) { const mo = ENG_MONTHS[m[1].toLowerCase()]; if (mo) return `${m[2]}-${mo}`; }
+    // Date object parse fallback
+    const dt = new Date(s); if (!isNaN(dt)) return dt.toISOString().slice(0,7);
+    return String(s).slice(0,7);
+  }
+  // fee.month field पहले try करो
+  const fm = parse(f.month || "");
+  if (fm && /^\d{4}-\d{2}$/.test(fm)) return fm;
+  // date field से try करो
+  const fd = parse(f.date || "");
+  if (fd && /^\d{4}-\d{2}$/.test(fd)) return fd;
+  return fm || fd || "";
+}
+
+// ═══════════════════════════════════════════
+// MEMBER ID AUTO-GENERATE: SVP + SerialNo(2) + MonthNo(2) + YearLast2
+// Format: SVP010426 → SVP=prefix, 01=serial, 04=month, 26=year
+// ═══════════════════════════════════════════
+function generateMemberId(joinDate) {
+  // joinDate can be "2026-04-10" or "2026-04"
+  const parts = String(joinDate || new Date().toISOString().slice(0,7)).split("-");
+  const year2 = parts[0] ? parts[0].slice(-2) : "26";
+  const month2 = parts[1] ? parts[1].padStart(2,"0") : "01";
+  // Serial: existing members + 1
+  const serial = String(members.length + 1).padStart(2, "0");
+  return `SVP${serial}${month2}${year2}`;
+}
+
+// ─── Dashboard ───
+function renderDashboard() {
+  // कुल सदस्य / Total Members = सभी (kabhi bhi admission lene wale)
+  document.getElementById("dc-total").textContent = members.length;
+  // सक्रिय / Active Members = sirf jinki status active hai
+  const activeCount = members.filter(m => (m.status || "active") === "active").length;
+  document.getElementById("dc-active").textContent = activeCount;
+  // Agar koi data nahi toh ₹0 dikhao
+  document.getElementById("dc-income").textContent  = rupee(summary.totalIncome || 0);
+  document.getElementById("dc-expense").textContent = rupee(summary.totalExpense || 0);
+  const profit = (summary.totalIncome||0)-(summary.totalExpense||0);
+  const pel = document.getElementById("dc-profit");
+  pel.textContent = rupee(profit); pel.style.color = profit>=0?"var(--green)":"var(--red)";
+  document.getElementById("dc-due").textContent = rupee(summary.totalDue || 0);
+  renderMonthSummary(); renderCatBars(); renderExpireTbl(); renderDueTbl();
+}
+
+// माह-वार सारांश: jis month fees jama ki us month ki income dikhao
+async function loadDashMonth() {
+  const month = document.getElementById("dashMonth").value;
+  try {
+    const s = await api({action:"getSummary", month});
+    summary = {...summary, ...s};
+    renderMonthSummary();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+function renderMonthSummary() {
+  document.getElementById("dm-income").textContent  = rupee(summary.monthIncome || 0);
+  document.getElementById("dm-expense").textContent = rupee(summary.monthExpense || 0);
+  const p = (summary.monthIncome||0)-(summary.monthExpense||0);
+  const el = document.getElementById("dm-profit");
+  el.textContent = rupee(p); el.style.color = p>=0?"var(--green)":"var(--red)";
+}
+
+function renderCatBars() {
+  const cats = summary.categoryTotals || {};
+  const total = Object.values(cats).reduce((a,b)=>a+b,0)||1;
+  const colors = {"बिजली":"#ff9800","किराया":"#e91e63","वेतन":"#4caf50","रखरखाव":"#2196f3","सफाई":"#9c27b0","अन्य":"#607d8b"};
+  document.getElementById("catBars").innerHTML = Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>{
+    const pct=Math.round(amt/total*100), col=colors[cat]||"#607d8b";
+    return `<div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px;">
+        <span style="font-weight:600;"><span style="color:${col};">●</span> ${cat}</span>
+        <span>${rupee(amt)} (${pct}%)</span>
+      </div>
+      <div style="background:#f0f4f8;border-radius:4px;height:8px;">
+        <div style="width:${pct}%;height:8px;background:${col};border-radius:4px;transition:.5s;"></div>
+      </div></div>`;
+  }).join("") || "<p style='color:var(--text2);font-size:13px;'>कोई खर्च नहीं / No Expenses</p>";
+}
+
+// बकाया / Pending Fees टेबल: Mobile column REMOVED, Web WhatsApp use
+function renderDueTbl() {
+  const dueMembers = members.filter(m=>Number(m.dueFee)>0 && (m.status||"active")==="active")
+    .sort((a,b)=>Number(b.dueFee)-Number(a.dueFee));
+  const tbody = document.getElementById("dueTbl");
+  if (!dueMembers.length) { tbody.innerHTML=`<tr><td colspan="3" class="empty-state">🎉 कोई बकाया नहीं</td></tr>`; return; }
+  tbody.innerHTML = dueMembers.map(m=>`<tr>
+    <td><strong>${m.name}</strong></td>
+    <td style="color:var(--red);font-weight:700;">${rupee(m.dueFee)}</td>
+    <td><button class="btn btn-wa btn-sm" onclick="sendReminder('${m.mobile||''}','${m.name}',${m.dueFee})">📲 भेजें</button></td>
+  </tr>`).join("");
+}
+
+// शीघ्र समाप्त टेबल: Mobile column removed from display
+function renderExpireTbl() {
+  const activeMembers = members.filter(m=>(m.status||"active")==="active" && m.expiry);
+  const rows = activeMembers.map(m=>({...m,diff:Math.ceil((new Date(m.expiry)-new Date())/86400000)}))
+    .filter(m=>m.diff<=15).sort((a,b)=>a.diff-b.diff).slice(0,10);
+  const tbody = document.getElementById("expireTbl");
+  if (!rows.length) { tbody.innerHTML=`<tr><td colspan="3" class="empty-state">कोई नहीं</td></tr>`; return; }
+  tbody.innerHTML = rows.map(m=>{
+    const diff = m.diff;
+    const cls = diff<0?"badge-red":diff<=7?"badge-yellow":"badge-green";
+    const txt = diff<0?"समाप्त":diff+"दिन बाकी";
+    return `<tr>
+      <td>${m.name}</td><td>${dateDisplay(m.expiry)}</td>
+      <td><span class="badge ${cls}">${txt}</span></td>
+    </tr>`;
+  }).join("");
+}
+
+// ═══════════════════════════════════════════
+// WhatsApp Functions — App direct open karta hai (wa.me → deep link)
+function openWhatsApp(mobile, msg) {
+  const encoded = encodeURIComponent(msg);
+  const url = mobile
+    ? `whatsapp://send?phone=91${mobile}&text=${encoded}`
+    : `whatsapp://send?text=${encoded}`;
+  // Try app first, fallback to web after 1.5 sec
+  const webUrl = mobile
+    ? `https://wa.me/91${mobile}?text=${encoded}`
+    : `https://wa.me/?text=${encoded}`;
+  const start = Date.now();
+  window.location.href = url;
+  setTimeout(function() {
+    // Agar page still visible hai (app nahi khula), web fallback
+    if (Date.now() - start < 2500) {
+      window.open(webUrl, '_blank');
+    }
+  }, 1500);
+}
+
+function sendReminder(mobile, name, due) {
+  const msg = `नमस्ते *${name}* जी! 🙏\n\nस्वामी विवेकानन्द पुस्तकालय, खोथांवाली\n\nआपकी बकाया / Pending Fees *${rupee(due)}* है।\nकृपया जल्द जमा करें।\n\nधन्यवाद 📚`;
+  openWhatsApp(mobile, msg);
+}
+
+function sendBulkReminder() {
+  const dueMembers = members.filter(m=>Number(m.dueFee)>0 && (m.status||"active")==="active");
+  if (!dueMembers.length) { showToast("🎉 कोई बकाया नहीं"); return; }
+  if (!confirm(`${dueMembers.length} सदस्यों को WhatsApp रिमाइंडर भेजें?`)) return;
+  let i = 0;
+  function sendNext() {
+    if (i >= dueMembers.length) { showToast(`✅ ${dueMembers.length} रिमाइंडर खुले`); return; }
+    const m = dueMembers[i++];
+    sendReminder(m.mobile||"", m.name, m.dueFee);
+    setTimeout(sendNext, 1500);
+  }
+  sendNext();
+}
+
+// Receipt WhatsApp Share — directly app open karta hai
+function shareReceiptWA() {
+  if (!lastReceiptData) return;
+  const f = lastReceiptData;
+  const msg = `🧾 *रसीद – स्वामी विवेकानन्द पुस्तकालय*\nखोथांवाली\n\n📋 रसीद: *${f.receiptNo}*\n👤 नाम: ${f.name||f.memberName}\n👨 पिता: ${f.fatherName||""}\n📅 महीना: ${monthDisplay(f.month||feeMonthStr(f))}\n✅ जमा: *${rupee(f.amount)}*\n💸 बाकी: ${rupee(f.due)}\n🗓️ तारीख: ${dateDisplay(f.date)}\n\nधन्यवाद! 🙏`;
+  openWhatsApp(f.mobile||"", msg);
+}
+
+// ═══════════════════════════════════════════
+// MEMBERS — Render Table
+// Columns: ID | नाम | पिता का नाम / Father's Name | महीना | कुल फीस | स्थिति | कार्य
+// Actions: Edit (sirf fee), Delete, Disable, Active
+// ═══════════════════════════════════════════
+function renderMembers() {
+  const q = document.getElementById("memberSearch").value.toLowerCase();
+  const f = document.getElementById("memberFilter").value;
+  let rows = members.filter(m => {
+    if (q && !m.name.toLowerCase().includes(q) && !String(m.mobile||"").includes(q)) return false;
+    if (f === "active" && (m.status||"active") !== "active") return false;
+    if (f === "disabled" && (m.status||"active") !== "disabled") return false;
+    return true;
+  });
+  const container = document.getElementById("membersTbl");
+  if (!rows.length) { container.innerHTML=`<p class="empty-state">कोई सदस्य नहीं / No Members</p>`; return; }
+  container.innerHTML = `<div class="member-cards">` + rows.map(m => {
+    const status = m.status || "active";
+    const isDisabled = status === "disabled";
+    const statusBadge = isDisabled
+      ? `<span class="badge badge-red">निष्क्रिय</span>`
+      : `<span class="badge badge-green">सक्रिय</span>`;
+    const joinDisplay = formatJoinDate(m.joinDate || m.joinMonth || "");
+    const dueAmt = Number(m.dueFee||0);
+    return `<div class="member-card${isDisabled?' disabled':''}">
+      <div class="member-card-top">
+        <div>
+          <div class="member-card-name">${m.name}</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:2px;">पिता: ${m.fatherName||"—"}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <span class="member-card-id">${m.id}</span>
+          ${statusBadge}
+        </div>
+      </div>
+      <div class="member-card-info">
+        📱 <span>${m.mobile ? `<a href="tel:${m.mobile}" style="color:var(--primary);">${m.mobile}</a>` : "—"}</span>
+        &nbsp;|&nbsp; 📅 <span>${joinDisplay}</span>
+        ${dueAmt>0 ? `<br>💸 बकाया: <span style="color:var(--red);font-weight:700;">${rupee(dueAmt)}</span>` : ''}
+      </div>
+      <div class="member-card-footer">
+        <div class="member-card-fee">फीस: ${rupee(m.totalFee)}</div>
+        <div class="member-card-actions">
+          <button class="btn btn-outline btn-sm" onclick="editMemberFee('${m.id}')" title="संपादित करें">✏️</button>
+          <button class="btn btn-outline btn-sm" onclick="downloadMemberPDF('${m.id}')" title="PDF">📄</button>
+          <button class="btn btn-red btn-sm" onclick="delMember('${m.id}')">🗑️</button>
+          ${isDisabled
+            ? `<button class="btn btn-green btn-sm" onclick="activateMember('${m.id}','${m.name}')">✅ Active</button>`
+            : `<button class="btn btn-orange btn-sm" onclick="openMidDisable('${m.id}')">🚫 Disable</button>`
+          }
+        </div>
+      </div>
+    </div>`;
+  }).join("") + `</div>`;
+}
+
+// ─── Member Form: Add New ───
+function openAddMember() {
+  editingMemberId = null;
+  document.getElementById("memberModalTitle").textContent = "नया सदस्य / Add New Member";
+  ["m-name","m-father","m-mother","m-mobile","m-email","m-address","m-city","m-state","m-firstfee"].forEach(id => document.getElementById(id).value="");
+  document.getElementById("m-dob").value = "";
+  document.getElementById("m-gender").value = "";
+  document.getElementById("m-qualification").value = "";
+  document.getElementById("m-qualification-custom").value = "";
+  document.getElementById("m-qualification-custom").style.display = "none";
+  document.getElementById("m-totalfee").value = "300";
+  // Join date = today (full date)
+  document.getElementById("m-join").value = new Date().toISOString().slice(0,10);
+  document.getElementById("m-type").value = "मासिक";
+  // Auto-generate ID based on today
+  document.getElementById("m-id").value = generateMemberId(new Date().toISOString().slice(0,7));
+  document.getElementById("downloadAdmissionBtn").style.display = "none";
+  document.getElementById("midMonthCalcBanner").style.display = "none";
+  calcAdmissionFee();
+  openModal("modalAddMember");
+}
+
+// Join date change → update Member ID + calc mid-month fee
+function onJoinDateChange() {
+  const dateVal = document.getElementById("m-join").value; // YYYY-MM-DD
+  if (!editingMemberId && dateVal) {
+    const ym = dateVal.slice(0,7);
+    document.getElementById("m-id").value = generateMemberId(ym);
+  }
+  calcAdmissionFee();
+}
+
+// Mid-month proportional fee calculator
+// Agar 10 tarikh ko join hua to 10 se 31 = 22 din / 30 * totalFee
+function calcAdmissionFee() {
+  const dateVal = document.getElementById("m-join").value; // YYYY-MM-DD
+  const totalFee = Number(document.getElementById("m-totalfee").value) || 0;
+  const banner = document.getElementById("midMonthCalcBanner");
+  if (!dateVal || !totalFee) { document.getElementById("m-firstfee").value=""; banner.style.display="none"; return; }
+  const joinDate = new Date(dateVal);
+  const joinDay = joinDate.getDate();
+  // Last day of join month
+  const lastDay = new Date(joinDate.getFullYear(), joinDate.getMonth()+1, 0).getDate();
+  const remainingDays = lastDay - joinDay + 1; // including join day
+  if (joinDay === 1) {
+    // 1st ko join: poori fee
+    document.getElementById("m-firstfee").value = totalFee;
+    banner.style.display = "none";
+  } else {
+    // Mid-month: proportional fee
+    const propFee = Math.round((remainingDays / lastDay) * totalFee);
+    document.getElementById("m-firstfee").value = propFee;
+    banner.style.display = "block";
+    banner.innerHTML = `📅 <strong>मध्य माह प्रवेश:</strong> ${joinDay} तारीख से ${lastDay} तारीख = <strong>${remainingDays} दिन</strong> × (${rupee(totalFee)} ÷ ${lastDay} दिन) = <strong style="color:var(--green);">${rupee(propFee)}</strong> (पहले माह की फीस)`;
+  }
+  // Download button sirf save ke baad dikhega — yahan nahi
+}
+
+// ─── Edit Member: Sirf fee edit ho sake ───
+function editMemberFee(id) {
+  const m = members.find(x => x.id === id);
+  if (!m) return;
+  editingMemberId = id;
+  document.getElementById("memberModalTitle").textContent = "सदस्य संपादित करें";
+  document.getElementById("m-id").value = m.id;
+  document.getElementById("m-name").value = m.name;
+  document.getElementById("m-father").value = m.fatherName || "";
+  document.getElementById("m-address").value = m.address || "";
+  document.getElementById("m-mobile").value = m.mobile || "";
+  document.getElementById("m-type").value = m.membershipType || "";
+  document.getElementById("m-mother").value = m.motherName || "";
+  document.getElementById("m-email").value = m.email || "";
+  document.getElementById("m-city").value = m.city || "";
+  document.getElementById("m-state").value = m.state || "";
+  document.getElementById("m-gender").value = m.gender || "";
+  document.getElementById("m-dob").value = m.dob || "";
+  // Qualification: check if it's a predefined value or custom
+  const qualSel = document.getElementById("m-qualification");
+  const qualCustom = document.getElementById("m-qualification-custom");
+  const predefinedQuals = ["","10th","12th","ITI / Diploma",
+    "Graduation (BA/BSc/BCom/BCA/BTech)",
+    "Post Graduation (MA/MSc/MCom/MTech)","B.Ed / D.El.Ed / NTT"];
+  if (m.qualification && !predefinedQuals.includes(m.qualification)) {
+    qualSel.value = "__custom__";
+    qualCustom.value = m.qualification;
+    qualCustom.style.display = "block";
+  } else {
+    qualSel.value = m.qualification || "";
+    qualCustom.value = "";
+    qualCustom.style.display = "none";
+  }
+  // Join date: if stored as YYYY-MM, convert to YYYY-MM-01
+  const jd = m.joinDate || (m.joinMonth ? m.joinMonth+"-01" : "");
+  document.getElementById("m-join").value = jd;
+  document.getElementById("m-totalfee").value = m.totalFee || 0;
+  document.getElementById("m-visitFrom").value = m.visitFrom || "";
+  document.getElementById("m-visitTo").value = m.visitTo || "";
+  document.getElementById("downloadAdmissionBtn").style.display = "none";
+  document.getElementById("midMonthCalcBanner").style.display = "none";
+  document.getElementById("m-firstfee").value = "";
+  openModal("modalAddMember");
+}
+
+// ─── Save Member ───
+async function saveMember() {
+  const joinDate = String(document.getElementById("m-join").value || ""); // YYYY-MM-DD always string
+  const name = document.getElementById("m-name").value.trim();
+  if (!name || !joinDate) { showToast("⚠️ नाम और ज्वाइन तारीख जरूरी है"); return; }
+  // joinMonth = YYYY-MM (for backward compat)
+  const joinMonth = joinDate.slice(0,7);
+  const m = {
+    id: document.getElementById("m-id").value.trim(),
+    name,
+    fatherName: document.getElementById("m-father").value.trim(),
+    motherName: document.getElementById("m-mother").value.trim(),
+    mobile: document.getElementById("m-mobile").value.trim(),
+    email: document.getElementById("m-email").value.trim(),
+    dob: document.getElementById("m-dob").value,
+    gender: document.getElementById("m-gender").value,
+    joinDate,
+    joinMonth,
+    totalFee: document.getElementById("m-totalfee").value || 0,
+    firstMonthFee: document.getElementById("m-firstfee").value || document.getElementById("m-totalfee").value || 0,
+    address: document.getElementById("m-address").value.trim(),
+    city: document.getElementById("m-city").value.trim(),
+    state: document.getElementById("m-state").value.trim(),
+    qualification: (function(){
+      const sel = document.getElementById("m-qualification");
+      if (sel.value === "__custom__") {
+        const c = document.getElementById("m-qualification-custom");
+        return (c && c.value.trim()) ? c.value.trim() : "";
+      }
+      return sel.value;
+    })(),
+    membershipType: document.getElementById("m-type").value.trim(),
+    status: "active",
+    visitFrom: document.getElementById("m-visitFrom").value || "",
+    visitTo: document.getElementById("m-visitTo").value || ""
+  };
+  try {
+    await api({action: editingMemberId ? "updateMember" : "addMember", member: m});
+    showToast(editingMemberId ? "✅ सदस्य अपडेट हो गया" : "✅ सदस्य सफलतापूर्वक जोड़ा गया!");
+    // Save ke BAAD — modal open rakho, download button prominently dikhao
+    const dlBtn = document.getElementById("downloadAdmissionBtn");
+    dlBtn.style.display = "inline-flex";
+    dlBtn.style.background = "#1e8e3e";
+    dlBtn.style.fontSize = "15px";
+    dlBtn.style.padding = "12px 20px";
+    dlBtn.style.width = "100%";
+    dlBtn.style.justifyContent = "center";
+    dlBtn.innerHTML = "📄 Admission Form Download करें";
+    // Modal band karne ka button change karo
+    document.querySelector("#modalAddMember .btn-outline").innerHTML = "✖ बंद करें";
+    loadAll();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+// ─── Delete Member ───
+async function delMember(id) {
+  if (!confirm("सदस्य हटाएं?")) return;
+  try {
+    await api({action:"deleteMember", id});
+    showToast("🗑️ सदस्य हटा दिया");
+    loadAll();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+// ─── Disable Member ───
+async function disableMember(id) {
+  if (!confirm("इस सदस्य को निष्क्रिय करें?")) return;
+  try {
+    await api({action:"updateMember", member:{id, status:"disabled"}});
+    showToast("🚫 सदस्य निष्क्रिय कर दिया"); loadAll();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+// ─── Mid-Month Disable ───
+let midDisableMemberId = null;
+
+function openMidDisable(id) {
+  const m = members.find(x => x.id === id);
+  if (!m) return;
+  midDisableMemberId = id;
+
+  // Current month details
+  const now = new Date();
+  const monthStr = now.toLocaleString("hi-IN", {month:"long", year:"numeric"});
+  const totalFee = Number(m.totalFee || 0);
+
+  document.getElementById("midDisableName").textContent = m.name;
+  document.getElementById("midDisableMonth").textContent = monthStr;
+  document.getElementById("midDisableTotalFee").textContent = rupee(totalFee);
+  document.getElementById("midDisableDays").value = "";
+  document.getElementById("midDisableCalcBox").style.display = "none";
+
+  openModal("modalMidDisable");
+}
+
+function calcMidDisableFee() {
+  const m = members.find(x => x.id === midDisableMemberId);
+  if (!m) return;
+
+  const days = parseInt(document.getElementById("midDisableDays").value) || 0;
+  const totalFee = Number(m.totalFee || 0);
+  const currentDue = Number(m.dueFee || 0);
+
+  // Total days in current month
+  const now = new Date();
+  const totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+
+  if (days < 1 || days > totalDays) {
+    document.getElementById("midDisableCalcBox").style.display = "none";
+    return;
+  }
+
+  // Proportional fee = days / totalDays × totalFee
+  const payable = Math.round((days / totalDays) * totalFee);
+  // New due = current due - totalFee (jo auto-renew me add hua) + payable
+  // Matlab: poore month ki jagah sirf attended days ki fee leni hai
+  const newDue = Math.max(0, currentDue - totalFee + payable);
+
+  document.getElementById("midDisableFormula").textContent =
+    `${days} दिन ÷ ${totalDays} दिन × ${rupee(totalFee)} = ${rupee(payable)}`;
+  document.getElementById("midDisablePayable").textContent = rupee(payable);
+  document.getElementById("midDisableNewDue").textContent = rupee(newDue);
+  document.getElementById("midDisableCalcBox").style.display = "block";
+}
+
+async function confirmMidDisable() {
+  const days = parseInt(document.getElementById("midDisableDays").value) || 0;
+  if (!days || days < 1) { showToast("⚠️ दिन दर्ज करें"); return; }
+
+  const m = members.find(x => x.id === midDisableMemberId);
+  if (!m) return;
+
+  const totalFee = Number(m.totalFee || 0);
+  const currentDue = Number(m.dueFee || 0);
+  const now = new Date();
+  const totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const payable = Math.round((days / totalDays) * totalFee);
+  const newDue = Math.max(0, currentDue - totalFee + payable);
+
+  try {
+    await api({action:"updateMember", member:{
+      id:             m.id,
+      status:         "disabled",
+      dueFee:         newDue,
+      // baaki fields preserve
+      name:           m.name,
+      fatherName:     m.fatherName,
+      motherName:     m.motherName,
+      mobile:         m.mobile,
+      email:          m.email,
+      dob:            m.dob,
+      gender:         m.gender,
+      joinDate:       m.joinDate,
+      joinMonth:      m.joinMonth,
+      totalFee:       m.totalFee,
+      firstMonthFee:  m.firstMonthFee,
+      address:        m.address,
+      city:           m.city,
+      state:          m.state,
+      qualification:  m.qualification,
+      membershipType: m.membershipType,
+      expiry:         m.expiry,
+      visitFrom:      m.visitFrom,
+      visitTo:        m.visitTo
+    }});
+    closeModal("modalMidDisable");
+    midDisableMemberId = null;
+    showToast(`🚫 ${m.name} निष्क्रिय — ${days} दिन की फीस ${rupee(payable)}, बकाया ${rupee(newDue)}`);
+    loadAll();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+// ─── Activate Member (Disabled → Active): Popup with reactivation month ───
+function activateMember(id, name) {
+  reactivatingMemberId = id;
+  document.getElementById("reactivateMemberName").textContent = name;
+  // Default: current month
+  document.getElementById("reactivateMonth").value = new Date().toISOString().slice(0,7);
+  openModal("modalReactivate");
+}
+
+async function confirmReactivate() {
+  const month = document.getElementById("reactivateMonth").value;
+  if (!month) { showToast("⚠️ महीना चुनें"); return; }
+  try {
+    await api({action:"updateMember", member:{
+      id: reactivatingMemberId,
+      status: "active",
+      joinMonth: month,          // FIX: joinMonth directly send karo
+      reactivationMonth: month   // backup ke liye bhi bhejo
+    }});
+    closeModal("modalReactivate");
+    showToast("✅ सदस्य सक्रिय कर दिया — फीस " + monthDisplay(month) + " से");
+    reactivatingMemberId = null;
+    loadAll();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+// ═══════════════════════════════════════════
+// FEES — Render & Modal
+// Filter: jis month fees jama ki (not date-wise)
+// ═══════════════════════════════════════════
+function renderFees() {
+  const q = document.getElementById("feeSearch").value.toLowerCase();
+  const m = document.getElementById("feeMonth").value;
+  let rows = fees.filter(f => {
+    if (q && !String(f.memberName||"").toLowerCase().includes(q) && !String(f.receiptNo).toLowerCase().includes(q)) return false;
+    if (m && feeMonthStr(f) !== m) return false;
+    return true;
+  });
+  const container = document.getElementById("feesTbl");
+  if (!rows.length) { container.innerHTML=`<p class="empty-state">कोई रसीद नहीं / No Records</p>`; return; }
+  container.innerHTML = `<div class="fee-cards">` + rows.slice().reverse().map(f => {
+    const isBaki = f.type === "baki" || (f.note && String(f.note).toLowerCase().includes("बाकी"));
+    const typeLabel = isBaki
+      ? `<span class="fee-type-badge fee-type-baki">💸 बाकी</span>`
+      : `<span class="fee-type-badge fee-type-monthly">📅 मासिक</span>`;
+    const dueAmt = Number(f.due||0);
+    return `<div class="fee-card${isBaki?' baki':''}">
+      <div class="fee-card-top">
+        <span class="fee-card-receipt">${f.receiptNo}</span>
+        ${typeLabel}
+      </div>
+      <div class="fee-card-name">${f.memberName||f.name||"—"}</div>
+      <div class="fee-card-info">
+        📅 महीना: <span>${monthDisplay(f.month)||f.month||"—"}</span><br>
+        🗓️ तारीख: <span>${dateDisplay(f.date)}</span><br>
+        💳 भुगतान: <span>${f.paymentMode||"नकद"}</span>
+        ${dueAmt>0 ? `<br>💸 बकाया: <span style="color:var(--red);font-weight:700;">${rupee(dueAmt)}</span>` : ''}
+        ${f.note ? `<br>📝 नोट: <span>${f.note}</span>` : ''}
+      </div>
+      <div class="fee-card-footer">
+        <div class="fee-card-amount">${rupee(f.amount)}</div>
+        <div class="fee-card-actions">
+          <button class="btn btn-outline btn-sm" onclick='showFeeReceipt(${JSON.stringify(f)})'>🖨️</button>
+          <button class="btn btn-wa btn-sm" onclick='showFeeReceiptAndWA(${JSON.stringify(f)})'>📲</button>
+          <button class="btn btn-outline btn-sm" onclick='downloadFeeRowPDF(${JSON.stringify(f)})'>⬇️</button>
+          <button class="btn btn-red btn-sm" onclick="delFee('${f.receiptNo}')">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("") + `</div>`;
+}
+
+// ─── Fee Modal: Monthly vs Baki mode ───
+function openCollectFee(type='monthly') {
+  currentFeeType = type;
+  const banner = document.getElementById("feeTypeBanner");
+  const title = document.getElementById("feeModalTitle");
+  if (type === 'baki') {
+    title.textContent = "💸 बाकी / Pending Fee";
+    banner.style.background = "#fce8e6";
+    banner.style.color = "#d93025";
+    banner.innerHTML = "💸 बाकी फीस मोड — सिर्फ पुरानी बाकी राशि जमा होगी";
+  } else {
+    title.textContent = "💰 मासिक फीस जमा";
+    banner.style.background = "#e6f4ea";
+    banner.style.color = "#1e8e3e";
+    banner.innerHTML = "📅 मासिक फीस मोड — नई मासिक फीस जमा होगी";
+  }
+  // Sirf active members dikhao dropdown mein
+  document.getElementById("fee-member").innerHTML = `<option value="">— सदस्य चुनें / Select Member —</option>` +
+    members.filter(m=>(m.status||"active")==="active")
+      .map(m=>`<option value="${m.id}">${m.name}</option>`).join("");
+  document.getElementById("fee-month").value = new Date().toISOString().slice(0,7);
+  ["fee-amount","fee-due-show","fee-new-due","fee-note","fee-discount"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("midMonthBanner").style.display = "none";
+  document.getElementById("fee-paymode").value = "नकद";
+  document.getElementById("fee-utr").value = "";
+  document.getElementById("fee-utr").style.display = "none";
+  openModal("modalCollectFee");
+}
+
+// Fee member select: auto-fill बाकी राशि from member's totalFee
+function onFeeSelect() {
+  const m = members.find(x => x.id === document.getElementById("fee-member").value);
+  if (!m) { document.getElementById("fee-due-show").value=""; return; }
+  // बाकी फीस AUTO: admission ke time ki total fee ke hisaab se
+  document.getElementById("fee-due-show").value = m.dueFee || m.totalFee || 0;
+  // Baki mode: auto-fill amount
+  if (currentFeeType === 'baki' && Number(m.dueFee) > 0) {
+    document.getElementById("fee-amount").value = m.dueFee;
+  }
+  // Mid-month admission suggestion (sirf monthly mode mein)
+  if (currentFeeType === 'monthly' && m.joinMonth) {
+    checkMidMonthSuggestion(m);
+  }
+  calcFeeDue();
+}
+
+// Mid-month admission: proportional fee suggest
+function checkMidMonthSuggestion(m) {
+  const banner = document.getElementById("midMonthBanner");
+  // joinMonth = "2026-04", agar pehle hi fee ho to suggestion nahi
+  const memberFees = fees.filter(f => f.memberId === m.id || f.memberName === m.name);
+  if (memberFees.length > 0) { banner.style.display="none"; return; }
+  // Check if admission was mid-month (join day > 1)
+  // joinMonth se exact join day nahi pata, isliye sirf suggestion show karenge
+  const joinYM = m.joinMonth || "";
+  const totalFee = Number(m.totalFee) || 300;
+  // Assume 1 month = totalFee for monthly, suggest proportional for first month
+  // We suggest: (days remaining in join month / 30) * totalFee
+  // Since we only have month, not day, show a general note
+  banner.style.display = "block";
+  banner.innerHTML = `💡 <strong>पहली फीस सुझाव:</strong> अगर ${monthDisplay(joinYM)} के बीच में admission हुई है तो अनुपातिक राशि डालें। (पूरी राशि: ${rupee(totalFee)})`;
+}
+
+function calcFeeDue() {
+  const m = members.find(x => x.id === document.getElementById("fee-member").value);
+  const due = Number(m?.dueFee || m?.totalFee || 0);
+  const amt = Number(document.getElementById("fee-amount").value) || 0;
+  const disc = Number(document.getElementById("fee-discount").value) || 0;
+  const newDue = due - amt - disc;
+  const newDueEl = document.getElementById("fee-new-due");
+  if (newDue < 0) {
+    newDueEl.value = 0;
+    newDueEl.style.color = "#1e8e3e";
+    newDueEl.title = `अग्रिम / Advance: ₹${Math.abs(newDue)} — अगले महीने adjust होगा`;
+    // Show advance banner
+    let banner = document.getElementById("advanceBanner");
+    if (!banner) {
+      banner = document.createElement("div");
+      banner.id = "advanceBanner";
+      banner.style.cssText = "padding:8px 12px;background:#e6f4ea;border-radius:8px;font-size:12px;color:#1e8e3e;margin-top:6px;font-weight:600;";
+      newDueEl.parentNode.appendChild(banner);
+    }
+    banner.style.display = "block";
+    banner.textContent = `✅ अग्रिम / Advance: ₹${Math.abs(newDue)} — अगले माह की फीस में से ₹${Math.abs(newDue)} कम होगा`;
+  } else {
+    newDueEl.value = newDue;
+    newDueEl.style.color = "";
+    newDueEl.title = "";
+    const banner = document.getElementById("advanceBanner");
+    if (banner) banner.style.display = "none";
+  }
+}
+
+async function saveFee() {
+  const memberId = document.getElementById("fee-member").value;
+  const m = members.find(x => x.id === memberId);
+  if (!m) { showToast("⚠️ सदस्य चुनें"); return; }
+  const amount   = Number(document.getElementById("fee-amount").value) || 0;
+  const discount = Number(document.getElementById("fee-discount").value) || 0;
+  // Amount zero allowed only if discount covers the due
+  const currentDue = Number(m.dueFee || m.totalFee || 0);
+  if (!amount && !discount) { showToast("⚠️ राशि या Discount डालें"); return; }
+  if (!amount && discount < currentDue) { showToast("⚠️ Discount पूरी फीस cover नहीं करता, राशि भी डालें"); return; }
+
+  const rawDue = currentDue - amount - discount;
+  const due    = Math.max(0, rawDue);
+  const advance = rawDue < 0 ? Math.abs(rawDue) : 0;
+
+  const notePrefix = currentFeeType === 'baki' ? "बाकी फीस जमा" : "";
+  const advanceNote = advance > 0 ? `अग्रिम ₹${advance} अगले माह adjust होगा` : "";
+  const discountNote = discount > 0 && amount === 0 ? `पूर्ण छूट / Full Discount ₹${discount}` : "";
+  const userNote = document.getElementById("fee-note").value.trim();
+  const finalNote = [notePrefix, discountNote, advanceNote, userNote].filter(Boolean).join(", ");
+
+  const feeMonth = document.getElementById("fee-month").value;
+  const p = {
+    memberId, memberName: m.name, fatherName: m.fatherName || "",
+    month: feeMonth, amount, due, discount, advance,
+    note: finalNote, type: currentFeeType,
+    paymentMode: document.getElementById("fee-paymode").value,
+    utrNumber: document.getElementById("fee-utr").value.trim()
+  };
+  try {
+    const res = await api({action:"collectFee", payment:p});
+    closeModal("modalCollectFee");
+    const receiptData = {
+      ...p, receiptNo: res.receiptNo,
+      date: new Date().toLocaleDateString("hi-IN"),
+      name: m.name, fatherName: m.fatherName||"", mobile: m.mobile||""
+    };
+    const typeMsg = currentFeeType==='baki' ? "💸 बाकी / Pending Fee: " : "✅ फीस जमा: ";
+    showToast(typeMsg + res.receiptNo + (advance > 0 ? ` | अग्रिम ₹${advance}` : "") + (discount > 0 && amount === 0 ? ` | पूर्ण छूट` : ""));
+    showFeeReceipt(receiptData);
+    loadAll();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+async function delFee(receiptNo) {
+  if (!confirm("यह रसीद हटाएं?")) return;
+  try {
+    await api({action:"deleteFee", receiptNo});
+    showToast("🗑️ रसीद हटा दी"); loadAll();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+// ═══════════════════════════════════════════
+// RECEIPT: Updated format per spec
+// Order: नाम, पिता का नाम / Father's Name, महीना, जमा राशि, बाकी राशि, Discount, तारीख
+// Mobile NAHI dikhana
+// अध्यक्ष के हस्ताक्षर section added
+// Download button: HTML file download
+// ═══════════════════════════════════════════
+function showFeeReceipt(f) {
+  lastReceiptData = f;
+  const discountRow = Number(f.discount) > 0
+    ? `<div class="receipt-row"><span>छूट / Discount</span><span style="color:var(--green);">${rupee(f.discount)}${Number(f.amount)===0?' (पूर्ण छूट)':''}</span></div>` : "";
+  document.getElementById("receiptContent").innerHTML = `
+    <div class="receipt-box" id="printableReceipt">
+      <h2>📚 स्वामी विवेकानन्द पुस्तकालय<br><small style="font-size:11px;font-weight:400;">खोथांवाली</small></h2>
+      <div class="receipt-row"><span>रसीद संख्या</span><strong>${f.receiptNo}</strong></div>
+      <div class="receipt-row"><span>नाम</span><span>${f.name||f.memberName||""}</span></div>
+      <div class="receipt-row"><span>पिता का नाम / Father's Name</span><span>${f.fatherName||"—"}</span></div>
+      ${f.mobile ? `<div class="receipt-row"><span>मोबाइल</span><span>${f.mobile}</span></div>` : ""}
+      <div class="receipt-row"><span>महीना</span><span>${monthDisplay(f.month||feeMonthStr(f))}</span></div>
+      <div class="receipt-row receipt-total"><span>जमा राशि</span><span>${rupee(f.amount)}</span></div>
+      <div class="receipt-row"><span>बाकी राशि</span><span style="color:red;">${rupee(f.due)}</span></div>
+      ${Number(f.advance) > 0 ? `<div class="receipt-row"><span>अग्रिम / Advance</span><span style="color:var(--green);font-weight:700;">₹${Number(f.advance).toLocaleString('hi-IN')} (अगले माह adjust)</span></div>` : ""}
+      ${discountRow}
+      <div class="receipt-row"><span>तारीख</span><span>${dateDisplay(f.date)}</span></div>
+      <div class="receipt-row"><span>भुगतान विधि</span><span>${f.paymentMode || "नकद"}</span></div>
+      ${(f.utrNumber && f.paymentMode !== "नकद") ? `<div class="receipt-row"><span>UTR / Txn No.</span><span>${f.utrNumber}</span></div>` : ""}
+      ${f.note && !String(f.note).startsWith("बाकी") ? `<div class="receipt-row"><span>नोट</span><span>${f.note}</span></div>` : ""}
+      <div class="receipt-sign">अध्यक्ष के हस्ताक्षर</div>
+      <div class="receipt-footer">धन्यवाद! 🙏<br>यह रसीद वैध प्रमाण है।</div>
+    </div>`;
+  openModal("modalReceipt");
+}
+
+function showFeeReceiptAndWA(f) {
+  showFeeReceipt(f);
+  setTimeout(()=>shareReceiptWA(), 300);
+}
+
+// Receipt Download as Image (PNG)
+async function downloadReceipt() {
+  if (!lastReceiptData) return;
+  const content = document.getElementById("receiptContent").innerHTML;
+  await downloadAsImage(content, `Receipt_${lastReceiptData.receiptNo}.png`);
+}
+
+// ═══════════════════════════════════════════
+// ADMISSION FORM DOWNLOAD
+// ═══════════════════════════════════════════
+async function downloadAdmissionForm() {
+  const id = document.getElementById("m-id").value || "—";
+  const name = document.getElementById("m-name").value.trim() || "—";
+  const father = document.getElementById("m-father").value.trim() || "—";
+  const mother = document.getElementById("m-mother").value.trim() || "—";
+  const mobile = document.getElementById("m-mobile").value.trim() || "—";
+  const email = document.getElementById("m-email").value.trim() || "—";
+  const dobRaw = document.getElementById("m-dob").value || "";
+  // DOB format: YYYY-MM-DD → DD/MM/YYYY
+  let dob = "—";
+  if (dobRaw) {
+    const mx = dobRaw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (mx) dob = mx[3] + "/" + mx[2] + "/" + mx[1];
+    else dob = dobRaw;
+  }
+  const gender = document.getElementById("m-gender").value || "—";
+  const address = document.getElementById("m-address").value.trim() || "—";
+  const city = document.getElementById("m-city").value.trim() || "—";
+  const state = document.getElementById("m-state").value.trim() || "—";
+  const qualification = (function(){
+    const sel = document.getElementById("m-qualification");
+    if (!sel) return "—";
+    if (sel.value === "__custom__") {
+      const c = document.getElementById("m-qualification-custom");
+      return (c && c.value.trim()) ? c.value.trim() : "—";
+    }
+    return sel.value || "—";
+  })();
+  const qualDisplay = qualification || "—";
+  const joinDate = formatJoinDate(document.getElementById("m-join").value || "");
+  const memberType = document.getElementById("m-type").value.trim() || "—";
+  const totalFee = document.getElementById("m-totalfee").value || "0";
+  const firstFee = document.getElementById("m-firstfee").value || totalFee;
+  const today = new Date().toLocaleDateString("hi-IN");
+  // Visit Duration
+  const visitFromRaw = document.getElementById("m-visitFrom").value || "";
+  const visitToRaw = document.getElementById("m-visitTo").value || "";
+  function fmtDate(d) {
+    if (!d) return "";
+    const mx = d.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return mx ? mx[3]+"/"+mx[2]+"/"+mx[1] : d;
+  }
+  const visitDurationRow = (visitFromRaw && visitToRaw)
+    ? `<tr><td>पुस्तकालय आने की अवधि</td><td colspan="2">${fmtDate(visitFromRaw)} से ${fmtDate(visitToRaw)} तक</td></tr>`
+    : "";
+
+  const html = `<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<title>प्रवेश फॉर्म – ${name}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Arial',sans-serif;background:#fff;margin:0;padding:96px 48px 48px 48px;}
+  .form-wrap{width:100%;max-width:720px;margin:0 auto;border:3px double #000;padding:18px;}
+  .header{text-align:center;margin-bottom:8px;}
+  .header h1{font-size:17px;margin:0 0 2px;font-weight:bold;}
+  .header .sub{font-size:11px;color:#444;margin:1px 0;}
+  .divider{border-top:2px solid #000;margin:8px 0;}
+  .form-title{text-align:center;font-size:13px;font-weight:bold;margin:8px 0;letter-spacing:1px;text-decoration:underline;}
+  table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:6px;}
+  td{padding:5px 8px;border:1px solid #555;vertical-align:top;}
+  td:first-child{font-weight:bold;width:36%;background:#f0f0f0;}
+  .section-title{background:#000;color:#fff;font-weight:bold;padding:4px 8px;font-size:11px;letter-spacing:.5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @media print{.section-title{background:#000!important;color:#fff!important;}}
+  .fee-box{background:#e6f4ea;border:1px solid #1e8e3e;padding:7px 12px;border-radius:4px;margin:6px 0;font-size:11px;}
+  .sign-row{display:flex;justify-content:space-between;margin-top:24px;font-size:11px;}
+  .sign-box{text-align:center;width:160px;}
+  .sign-line{border-top:1px solid #000;padding-top:4px;margin-top:32px;}
+  .footer{text-align:center;font-size:10px;color:#777;margin-top:10px;border-top:1px solid #ccc;padding-top:6px;}
+  @media print{body{padding:0;} @page{size:A4;margin-top:25.4mm;margin-left:12.7mm;margin-right:12.7mm;margin-bottom:12.7mm;} .section-title{background:#000!important;color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}}
+</style>
+</head>
+<body>
+<div class="form-wrap">
+  <div class="header">
+    <h1>📚 स्वामी विवेकानन्द पुस्तकालय</h1>
+    <div class="sub">खोथांवाली, हनुमानगढ़</div>
+    <div class="sub">Library Student Registration Form</div>
+  </div>
+  <div class="divider"></div>
+  <div class="form-title">सदस्यता प्रवेश फॉर्म / Admission Form</div>
+  
+  <table>
+    <tr><td colspan="3" style="background:#000;color:#fff;font-weight:bold;padding:5px 8px;font-size:11px;letter-spacing:.5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">🪪 व्यक्तिगत जानकारी / Personal Details</td></tr>
+    <tr><td>सदस्य ID / Member ID</td><td colspan="2"><strong style="color:#1a73e8;font-size:13px;">${id}</strong></td></tr>
+    <tr><td>विद्यार्थी का नाम</td><td colspan="2"><strong>${name}</strong></td></tr>
+    <tr><td>पिता का नाम</td><td colspan="2">${father}</td></tr>
+    <tr><td>माता का नाम</td><td colspan="2">${mother}</td></tr>
+    <tr><td>जन्म तिथि / DOB</td><td>${dob}</td><td>लिंग / Gender: <strong>${gender}</strong></td></tr>
+    <tr><td>मोबाइल / Mobile</td><td>${mobile}</td><td>Email: ${email}</td></tr>
+    <tr><td>उच्चतम शिक्षा</td><td colspan="2">${qualDisplay}</td></tr>
+    <tr><td>पूरा पता / Address</td><td colspan="2">${address}, ${city}, ${state}</td></tr>
+  </table>
+
+  <table>
+    <tr><td colspan="2" style="background:#000;color:#fff;font-weight:bold;padding:5px 8px;font-size:11px;letter-spacing:.5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">💰 सदस्यता विवरण / Membership Details</td></tr>
+    <tr><td>सदस्यता प्रकार</td><td><strong>${memberType}</strong></td></tr>
+    <tr><td>ज्वाइन तारीख</td><td><strong>${joinDate}</strong></td></tr>
+    <tr><td>मासिक शुल्क / Monthly Fee</td><td>₹${Number(totalFee).toLocaleString('hi-IN')}</td></tr>
+    <tr><td>पहले माह की फीस</td><td><strong style="color:#1e8e3e;font-size:13px;">₹${Number(firstFee).toLocaleString('hi-IN')}</strong></td></tr>
+    <tr><td>आवेदन तारीख</td><td>${today}</td></tr>
+    ${visitDurationRow}
+  </table>
+
+  <div class="fee-box">
+    💡 <strong>नोट:</strong> पहले माह की फीस ज्वाइन तारीख के अनुसार अनुपातिक रूप से गणना की गई है।
+  </div>
+
+  <div class="sign-row">
+    <div class="sign-box">
+      <div class="sign-line">विद्यार्थी के हस्ताक्षर<br><small>(Signature of Student)</small></div>
+    </div>
+    <div class="sign-box">
+      <div class="sign-line">अध्यक्ष के हस्ताक्षर<br><small>स्वामी विवेकानन्द पुस्तकालय</small></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    यह फॉर्म वैध प्रमाण है। दोनों पक्षों के हस्ताक्षर आवश्यक हैं।<br>
+    This form is a valid proof. Signatures of both parties are required.
+  </div>
+</div>
+<\/body>
+<\/html>`;
+  await downloadAsPDF(html, `Admission_${name}_${id}.pdf`);
+}
+// ═══════════════════════════════════════════
+function renderExpenses() {
+  const month = document.getElementById("expMonth").value;
+  const cat = document.getElementById("expCatFilter").value;
+  let rows = expenses.filter(e => {
+    if (month && !String(e.date).startsWith(month)) return false;
+    if (cat && e.category !== cat) return false;
+    return true;
+  });
+  const total = rows.reduce((s,e)=>s+Number(e.amount),0);
+  document.getElementById("exp-month-total").textContent = rupee(total);
+  document.getElementById("exp-count").textContent = rows.length;
+  if (rows.length) {
+    const ct = {}; rows.forEach(e=>{ ct[e.category]=(ct[e.category]||0)+Number(e.amount); });
+    const top = Object.entries(ct).sort((a,b)=>b[1]-a[1])[0];
+    document.getElementById("exp-top-cat").textContent = top ? top[0] : "—";
+  } else document.getElementById("exp-top-cat").textContent = "—";
+  const tbody = document.getElementById("expensesTbl");
+  if (!rows.length) { tbody.innerHTML=`<tr><td colspan="8" class="empty-state">कोई खर्च नहीं / No Expenses</td></tr>`; return; }
+  tbody.innerHTML = rows.slice().reverse().map(e=>`<tr>
+    <td style="font-size:11px;color:var(--text2);">${e.expId}</td><td>${e.date}</td>
+    <td><span class="badge badge-orange">${e.category}</span></td><td>${e.description}</td>
+    <td style="color:var(--red);font-weight:600;">${rupee(e.amount)}</td>
+    <td>${e.paymentMethod}</td><td style="font-size:12px;">${e.note||""}</td>
+    <td style="white-space:nowrap;">
+        <button class="btn btn-outline btn-sm" onclick='showExpReceipt(${JSON.stringify(e)})'>🖨️</button>
+        <button class="btn btn-outline btn-sm" onclick='downloadExpRowPDF(${JSON.stringify(e)})'>⬇️</button>
+        <button class="btn btn-red btn-sm" onclick="delExpense('${e.expId}')">🗑️</button>
+    </td>
+  </tr>`).join("");
+}
+
+function openAddExpense() {
+  document.getElementById("exp-date").value = new Date().toISOString().slice(0,10);
+  ["exp-amt","exp-desc","exp-note"].forEach(id=>document.getElementById(id).value="");
+  openModal("modalAddExpense");
+}
+
+async function saveExpense() {
+  const exp = {
+    date: document.getElementById("exp-date").value,
+    category: document.getElementById("exp-cat").value,
+    description: document.getElementById("exp-desc").value.trim(),
+    amount: document.getElementById("exp-amt").value,
+    paymentMethod: document.getElementById("exp-pay").value,
+    note: document.getElementById("exp-note").value.trim()
+  };
+  if (!exp.date || !exp.description || !exp.amount) { showToast("⚠️ तारीख, विवरण और राशि जरूरी है"); return; }
+  try {
+    const res = await api({action:"addExpense", expense:exp});
+    closeModal("modalAddExpense"); showToast("✅ खर्च जोड़ा: "+res.expId);
+    showExpReceipt({...exp, expId:res.expId}); loadAll();
+  } catch(e) { showToast("❌ "+e.message); }
+}
+
+async function delExpense(id) {
+  if (!confirm("खर्च हटाएं?")) return;
+  await api({action:"deleteExpense", id}); showToast("🗑️ खर्च हटा दिया"); loadAll();
+}
+
+function showExpReceipt(e) {
+  document.getElementById("expReceiptContent").innerHTML = `
+    <div class="receipt-box">
+      <h2>📊 खर्च / Expenses रसीद</h2>
+      <div class="receipt-row"><span>ID</span><strong>${e.expId}</strong></div>
+      <div class="receipt-row"><span>श्रेणी</span><span>${e.category}</span></div>
+      <div class="receipt-row"><span>विवरण</span><span>${e.description}</span></div>
+      <div class="receipt-row receipt-total"><span>राशि</span><span>${rupee(e.amount)}</span></div>
+      <div class="receipt-row"><span>भुगतान</span><span>${e.paymentMethod}</span></div>
+      <div class="receipt-row"><span>तारीख</span><span>${e.date}</span></div>
+      ${e.note?`<div class="receipt-row"><span>नोट</span><span>${e.note}</span></div>`:""}
+      <div class="receipt-footer">स्वामी विवेकानन्द पुस्तकालय 🏛️</div>
+    </div>`;
+  openModal("modalExpReceipt");
+}
+
+// ═══════════════════════════════════════════
+// REPORTS
+// ═══════════════════════════════════════════
+async function loadReport() {
+  const month = document.getElementById("repMonth").value;
+  const s = await api({action:"getSummary", month});
+  const profit = (s.monthIncome||0)-(s.monthExpense||0);
+  document.getElementById("rep-income").textContent = rupee(s.monthIncome);
+  document.getElementById("rep-expense").textContent = rupee(s.monthExpense);
+  const pel = document.getElementById("rep-profit");
+  pel.textContent = rupee(profit); pel.style.color = profit>=0?"var(--green)":"var(--red)";
+  document.getElementById("rep-due").textContent = rupee(s.totalDue);
+  const cats = s.categoryTotals || {};
+  document.getElementById("repCatDetail").innerHTML = Object.entries(cats).length
+    ? `<table><thead><tr><th>श्रेणी</th><th>राशि</th></tr></thead><tbody>` +
+      Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v])=>
+        `<tr><td>${k}</td><td style="font-weight:600;color:var(--red);">${rupee(v)}</td></tr>`
+      ).join("") + `</tbody></table>`
+    : `<p style="color:var(--text2);font-size:13px;">इस माह कोई खर्च नहीं / No Expenses</p>`;
+  // Fee filter: fee.month field ke hisaab se (jis month fees jama ki)
+  const mFees = fees.filter(f => feeMonthStr(f) === month);
+  document.getElementById("repFeesTbl").innerHTML = mFees.length
+    ? mFees.map(f=>`<tr><td>${f.receiptNo}</td><td>${f.memberName||f.name||"—"}</td><td>${monthDisplay(f.month)||f.month}</td>
+        <td style="color:var(--green);font-weight:600;">${rupee(f.amount)}</td><td>${f.date}</td></tr>`).join("")
+    : `<tr><td colspan="5" class="empty-state">कोई रसीद नहीं / No Records</td></tr>`;
+  const mExp = expenses.filter(e=>String(e.date).startsWith(month));
+  document.getElementById("repExpTbl").innerHTML = mExp.length
+    ? mExp.map(e=>`<tr><td>${e.date}</td><td>${e.category}</td><td>${e.description}</td>
+        <td style="color:var(--red);font-weight:600;">${rupee(e.amount)}</td></tr>`).join("")
+    : `<tr><td colspan="4" class="empty-state">कोई खर्च नहीं / No Expenses</td></tr>`;
+}
+
+function printReport() { window.print(); }
+
+// ═══════════════════════════════════════════
+// MODAL & TOAST HELPERS
+// ═══════════════════════════════════════════
+function openModal(id) {
+  document.getElementById(id).classList.add("show");
+  if (id === "modalSettings") {
+    document.getElementById("scriptUrlInput").value = SCRIPT_URL || "";
+    document.getElementById("urlStatus").innerHTML = "";
+  }
+}
+function closeModal(id) { document.getElementById(id).classList.remove("show"); }
+
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove("show"), 3000);
+}
+
+
+// ═══════════════════════════════════════════
+// SEAT ALLOTMENT
+// ═══════════════════════════════════════════
+let seatAllotments = [];
+let editingSeatId = null;
+
+// Slot timing map
+const SLOTS = {
+  "1":"6:00 AM – 9:00 AM","2":"6:00 AM – 9:30 AM","3":"6:30 AM – 9:30 AM",
+  "4":"6:00 AM – 11:00 AM","5":"7:00 AM – 12:00 PM","6":"8:00 AM – 1:00 PM",
+  "7":"6:00 AM – 4:00 PM","8":"7:00 AM – 5:00 PM","9":"8:00 AM – 6:00 PM","10":"9:00 AM – 7:00 PM",
+  "11":"12:00 PM – 5:00 PM","12":"1:00 PM – 6:00 PM","13":"2:00 PM – 7:00 PM",
+  "14":"6:00 PM – 9:00 PM","15":"7:00 PM – 10:00 PM","16":"8:00 PM – 11:00 PM",
+  "17":"6:00 AM – 6:00 PM","18":"7:00 AM – 7:00 PM","19":"11:00 AM – 11:00 PM",
+  "20":"6:00 AM – 11:00 PM",
+  "21":"9:00 AM – 6:00 PM","22":"9:30 AM – 6:00 PM","23":"10:00 AM – 6:00 PM",
+  "24":"10:30 AM – 6:00 PM","25":"11:00 AM – 6:00 PM"
+};
+
+// Slot start/end hours for conflict detection
+const SLOT_TIMES = {
+  "1":[6,9],"2":[6,9.5],"3":[6.5,9.5],
+  "4":[6,11],"5":[7,12],"6":[8,13],
+  "7":[6,16],"8":[7,17],"9":[8,18],"10":[9,19],
+  "11":[12,17],"12":[13,18],"13":[14,19],
+  "14":[18,21],"15":[19,22],"16":[20,23],
+  "17":[6,18],"18":[7,19],"19":[11,23],
+  "20":[6,23],
+  "21":[9,18],"22":[9.5,18],"23":[10,18],"24":[10.5,18],"25":[11,18]
+};
+
+let _copyFromMonth = "", _copyToMonth = "", _prevSeatsData = [];
+
+async function copyPrevMonthSeats() {
+  const seatMonthEl = document.getElementById("seatMonth");
+  if (!seatMonthEl.value) seatMonthEl.value = new Date().toISOString().slice(0,7);
+  _copyToMonth = seatMonthEl.value;
+
+  // Previous month calculate
+  const [y, m] = _copyToMonth.split("-").map(Number);
+  const prevDate = new Date(y, m - 2, 1);
+  _copyFromMonth = prevDate.getFullYear() + "-" + String(prevDate.getMonth()+1).padStart(2,"0");
+
+  showToast("📋 पिछले माह का data load हो रहा है...");
+  try {
+    const res = await api({action:"getSeats", month: _copyFromMonth});
+    let prevSeats = res.seats || [];
+
+    // Normalize months
+    prevSeats = prevSeats.map(s => ({...s, month: _copyFromMonth}));
+
+    // Current month mein already kaunse members hain
+    const curRes = await api({action:"getSeats", month: _copyToMonth});
+    const curSeats = curRes.seats || [];
+    const existingIds = curSeats.map(s => String(s.memberId));
+
+    // Filter: jo already current month mein hain unhe skip karo
+    _prevSeatsData = prevSeats.filter(s => existingIds.indexOf(String(s.memberId)) === -1);
+
+    if (!_prevSeatsData.length) {
+      showToast("ℹ️ " + monthDisplay(_copyFromMonth) + " में कोई seat नहीं मिली या सभी already copy हैं");
+      return;
+    }
+
+    // Modal mein list dikhao
+    document.getElementById("copySeatsInfo").innerHTML =
+      `<strong>${monthDisplay(_copyFromMonth)}</strong> → <strong>${monthDisplay(_copyToMonth)}</strong> &nbsp;|&nbsp; कुल <strong>${_prevSeatsData.length}</strong> seats मिलीं`;
+
+    const tbody = document.getElementById("copySeatsListBody");
+    tbody.innerHTML = _prevSeatsData.map((s, i) => `
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:8px;text-align:center;">
+          <input type="checkbox" class="copy-seat-cb" data-idx="${i}" checked
+            style="width:16px;height:16px;cursor:pointer;"/>
+        </td>
+        <td style="padding:8px;font-weight:600;">${s.memberName||"—"}</td>
+        <td style="padding:8px;text-align:center;"><strong style="color:var(--primary);">Seat ${s.seatNo}</strong></td>
+        <td style="padding:8px;text-align:center;font-size:12px;color:var(--text2);">Slot ${s.slotNo}</td>
+      </tr>`).join("");
+
+    document.getElementById("copySelectAll").checked = true;
+    openModal("modalCopySeats");
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+function toggleAllCopySeats(checked) {
+  document.querySelectorAll(".copy-seat-cb").forEach(cb => cb.checked = checked);
+}
+
+async function confirmCopySeats() {
+  const selected = [];
+  document.querySelectorAll(".copy-seat-cb:checked").forEach(cb => {
+    const idx = parseInt(cb.getAttribute("data-idx"));
+    if (_prevSeatsData[idx]) selected.push(_prevSeatsData[idx]);
+  });
+
+  if (!selected.length) { showToast("⚠️ कोई seat select नहीं की"); return; }
+
+  showToast("📋 Copy हो रही है...");
+  try {
+    const res = await api({
+      action: "copySeats",
+      fromMonth: _copyFromMonth,
+      toMonth: _copyToMonth,
+      selectedIds: selected.map(s => s.memberId)
+    });
+    closeModal("modalCopySeats");
+    showToast(`✅ ${res.copied || selected.length} seats copy हो गई — ${monthDisplay(_copyToMonth)} में!`);
+    loadSeats();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+async function loadSeats() {
+  // Agar month select nahi hua toh current month auto-set karo
+  const seatMonthEl = document.getElementById("seatMonth");
+  if (!seatMonthEl.value) {
+    seatMonthEl.value = new Date().toISOString().slice(0,7);
+  }
+  const month = seatMonthEl.value; // always YYYY-MM format
+  try {
+    const res = await api({action:"getSeats", month});
+    let seats = res.seats || [];
+    
+    // Google Sheets kabhi kabhi month ko "Apr 2026" ya "01/04/2026" mein
+    // convert kar deta hai — isliye HTML side par bhi filter lagao
+    // Dono taraf se check: API filter + HTML fallback filter
+    const ENG_MONTHS = {january:"01",february:"02",march:"03",april:"04",may:"05",june:"06",
+      july:"07",august:"08",september:"09",october:"10",november:"11",december:"12"};
+    
+    function normalizeMonth(val) {
+      if (!val) return "";
+      // Google Sheets apostrophe prefix strip karo ('2026-04 → 2026-04)
+      const s = String(val).trim().replace(/^'+/, "");
+      // Already YYYY-MM
+      if (/^\d{4}-\d{2}$/.test(s)) return s;
+      // YYYY-MM-DD
+      const m1 = s.match(/^(\d{4})-(\d{2})/); if (m1) return m1[1]+"-"+m1[2];
+      // "Apr 2026" or "April 2026"
+      const m2 = s.match(/^([A-Za-z]+)\s+(\d{4})$/);
+      if (m2) { const mo = ENG_MONTHS[m2[1].toLowerCase()]; if (mo) return m2[2]+"-"+mo; }
+      // DD/MM/YYYY
+      const m3 = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      if (m3) return m3[3]+"-"+m3[2].padStart(2,"0");
+      // MM/YYYY
+      const m4 = s.match(/^(\d{1,2})\/(\d{4})$/);
+      if (m4) return m4[2]+"-"+m4[1].padStart(2,"0");
+      return s;
+    }
+    
+    // Normalize all seat months + filter by selected month
+    seats = seats.map(s => ({...s, month: normalizeMonth(s.month)}));
+    seats = seats.filter(s => s.month === month);
+    
+    seatAllotments = seats;
+    renderSeats();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+function renderSeats() {
+  const month = document.getElementById("seatMonth").value;
+  // API already month-wise data deta hai, toh sab use karo — double filter nahi
+  const monthSeats = seatAllotments;
+  
+  // Stats
+  const numberedSeats = new Set(monthSeats.filter(s=>String(s.seatNo)!=="Non-Seater").map(s=>String(s.seatNo)));
+  const nonSeaters = monthSeats.filter(s=>String(s.seatNo)==="Non-Seater").length;
+  document.getElementById("seat-allotted").textContent = numberedSeats.size;
+  document.getElementById("seat-empty").textContent = 30 - numberedSeats.size;
+  document.getElementById("seat-nonseater").textContent = nonSeaters;
+
+  // Seat Grid
+  const grid = document.getElementById("seatGrid");
+  grid.innerHTML = "";
+  for (let i = 1; i <= 30; i++) {
+    // loose == comparison to handle number/string mismatch from sheet
+    const seatAllots = monthSeats.filter(s => String(s.seatNo) == String(i));
+    let bg = "#e6f4ea", border = "#1e8e3e";
+    let nameHtml = `<div style="font-size:9px;color:#999;">खाली</div>`;
+    if (seatAllots.length === 1) {
+      bg="#fce8e6"; border="#d93025";
+      const shortName = (seatAllots[0].memberName||"").split(" ")[0];
+      nameHtml = `<div style="font-size:9px;color:#d93025;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${shortName}</div>
+                  <div style="font-size:8px;color:#999;">Slot ${seatAllots[0].slotNo}</div>`;
+    } else if (seatAllots.length > 1) {
+      bg="#e8f0fe"; border="#1a73e8";
+      const names = seatAllots.map(a=>(a.memberName||"").split(" ")[0]).join(", ");
+      nameHtml = `<div style="font-size:8px;color:#1a73e8;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${names}">${seatAllots.length} 👥</div>`;
+    }
+    grid.innerHTML += `<div onclick="showSeatDetail(${i})" style="background:${bg};border:1.5px solid ${border};border-radius:8px;padding:6px 4px;text-align:center;cursor:pointer;font-size:13px;font-weight:700;">
+      ${i}
+      ${nameHtml}
+    </div>`;
+  }
+
+  // Seat Cards
+  const tbody = document.getElementById("seatsTbl");
+  if (!monthSeats.length) { tbody.innerHTML=`<p class="empty-state">कोई आवंटन नहीं / No Allotments</p>`; return; }
+  tbody.innerHTML = `<div class="fee-cards">` + monthSeats.map(s => {
+    const slotTime = SLOTS[s.slotNo] || "";
+    const isNonSeater = String(s.seatNo) === "Non-Seater";
+    return `<div class="fee-card" style="border-left-color:${isNonSeater?'#e37400':'var(--primary)'};">
+      <div class="fee-card-top">
+        <span class="fee-card-receipt" style="background:${isNonSeater?'#fef3e2':'var(--primary-light)'};color:${isNonSeater?'#e37400':'var(--primary)'};">
+          ${isNonSeater ? '🚫 Non-Seater' : '🪑 Seat ' + s.seatNo}
+        </span>
+        <span style="font-size:11px;color:var(--text2);">Slot ${s.slotNo}</span>
+      </div>
+      <div class="fee-card-name">${s.memberName||"—"}</div>
+      <div class="fee-card-info">
+        ⏰ <span>${slotTime}</span><br>
+        📅 <span>${monthDisplay(s.month||month)}</span>
+      </div>
+      <div class="fee-card-footer">
+        <div></div>
+        <div class="fee-card-actions">
+          <button class="btn btn-outline btn-sm" onclick="editSeat('${s.allotId}')">✏️</button>
+          <button class="btn btn-red btn-sm" onclick="deleteSeat('${s.allotId}')">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("") + `</div>`;
+}
+
+function showSeatDetail(seatNo) {
+  const month = document.getElementById("seatMonth").value;
+  const allots = seatAllotments.filter(s => String(s.seatNo) == String(seatNo));
+  if (!allots.length) {
+    showToast(`🟢 Seat ${seatNo} — ${monthDisplay(month)} में खाली है`);
+    return;
+  }
+  let msg = `Seat ${seatNo} — ${monthDisplay(month)}:\n`;
+  allots.forEach(a => msg += `\nSlot ${a.slotNo}: ${a.memberName} (${SLOTS[a.slotNo]||""})`);
+  alert(msg);
+}
+
+function openSeatAllot(allotId = null) {
+  editingSeatId = allotId;
+  document.getElementById("seatModalTitle").textContent = allotId ? "✏️ सीट बदलें" : "🪑 सीट / Seats आवंटन";
+  
+  // Fill members dropdown
+  document.getElementById("sa-member").innerHTML = 
+    `<option value="">— विद्यार्थी / Select Student —</option>` +
+    members.filter(m=>(m.status||"active")==="active")
+      .map(m=>`<option value="${m.id}|${m.name}">${m.name}</option>`).join("");
+
+  // Fill seat numbers
+  const seatSel = document.getElementById("sa-seat");
+  seatSel.innerHTML = `<option value="">— सीट चुनें / Select Seat —</option><option value="Non-Seater">🚫 Non-Seater</option>`;
+  for (let i=1; i<=30; i++) seatSel.innerHTML += `<option value="${i}">सीट ${i}</option>`;
+
+  // month auto-set (hidden, permanent seat)
+  const autoMonth = new Date().toISOString().slice(0,7);
+  document.getElementById("sa-slot").value = "";
+  document.getElementById("seatConflictWarn").style.display = "none";
+
+  if (allotId) {
+    const s = seatAllotments.find(x=>x.allotId===allotId);
+    if (s) {
+      document.getElementById("sa-member").value = s.memberId+"|"+s.memberName;
+      document.getElementById("sa-seat").value = s.seatNo;
+      // month stored internally from original allotment
+      const slotSelect = document.getElementById("sa-slot");
+      const opts = slotSelect.options;
+      for (let i = 0; i < opts.length; i++) {
+        if (opts[i].value.split("|")[0] === String(s.slotNo)) {
+          slotSelect.value = opts[i].value;
+          break;
+        }
+      }
+    }
+  }
+  openModal("modalSeatAllot");
+}
+
+function editSeat(allotId) { openSeatAllot(allotId); }
+
+async function saveSeatAllot() {
+  const memberVal = document.getElementById("sa-member").value;
+  const seatNo = document.getElementById("sa-seat").value;
+  // month = selected month from seatMonth input (current month)
+  const seatMonthEl = document.getElementById("seatMonth");
+  if (!seatMonthEl.value) seatMonthEl.value = new Date().toISOString().slice(0,7);
+  const month = seatMonthEl.value;
+  const slotVal = document.getElementById("sa-slot").value;
+
+  if (!memberVal || !seatNo || !slotVal) { showToast("⚠️ सभी फील्ड भरें"); return; }
+
+  const [memberId, memberName] = memberVal.split("|");
+  const [slotNo] = slotVal.split("|");
+
+  // Conflict check — same seat, same month, overlapping slot
+  if (seatNo !== "Non-Seater") {
+    const conflicts = seatAllotments.filter(s =>
+      String(s.seatNo) == String(seatNo) &&
+      s.allotId !== editingSeatId &&
+      slotsOverlap(s.slotNo, slotNo)
+    );
+    if (conflicts.length) {
+      const warn = document.getElementById("seatConflictWarn");
+      warn.style.display = "block";
+      warn.textContent = `⚠️ Seat ${seatNo} पर Slot ${slotNo} में ${conflicts[0].memberName} पहले से है!`;
+      return;
+    }
+  }
+
+  try {
+    const body = {
+      action: editingSeatId ? "updateSeat" : "addSeat",
+      seat: { allotId: editingSeatId, memberId, memberName, seatNo, month, slotNo }
+    };
+    await api(body);
+    closeModal("modalSeatAllot");
+    showToast(`✅ ${memberName} को Seat ${seatNo} (Slot ${slotNo}) — ${monthDisplay(month)} में आवंटित कर दी गई! ✔️ Confirmed`);
+    loadSeats();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+async function deleteSeat(allotId) {
+  if (!confirm("यह आवंटन हटाएं?")) return;
+  try {
+    await api({action:"deleteSeat", allotId});
+    showToast("🗑️ आवंटन हटा दिया"); loadSeats();
+  } catch(e) { showToast("❌ " + e.message); }
+}
+
+function slotsOverlap(slot1, slot2) {
+  const t1 = SLOT_TIMES[String(slot1)];
+  const t2 = SLOT_TIMES[String(slot2)];
+  if (!t1 || !t2) return false;
+  return t1[0] < t2[1] && t2[0] < t1[1];
+}
+
+// ═══════════════════════════════════════════
+// CLEAR SHEET DATA (Danger Zone)
+// ═══════════════════════════════════════════
+async function clearSheetData(sheetName) {
+  const labels = {
+    Members: 'Members (sabhi sadasy)',
+    Fees: 'Fees (sabhi raseedein)',
+    Expenses: 'Expenses (sabhi kharch)',
+    ALL: 'Sab kuch (Members + Fees + Expenses)'
+  };
+  const label = labels[sheetName] || sheetName;
+  if (!confirm('WARNING: ' + label + ' ka data hamesha ke liye mit jaayega. Kya aap sure hain?')) return;
+  if (!confirm('LAST CHANCE! ' + label + ' - Pakka delete karna hai?')) return;
+
+  const statusEl = document.getElementById('clearStatus');
+  statusEl.innerHTML = '<span style="color:#e37400;">⏳ डेटा मिट रहा है…</span>';
+
+  try {
+    const sheets = sheetName === 'ALL' ? ['Members','Fees','Expenses'] : [sheetName];
+    for (const s of sheets) {
+      await api({action: 'clearSheet', sheetName: s});
+    }
+    statusEl.innerHTML = '<span style="color:var(--green);">✅ ' + label + ' का डेटा साफ हो गया!</span>';
+    showToast('✅ ' + label + ' का डेटा मिट गया');
+    setTimeout(() => {
+      closeModal('modalSettings');
+      loadAll();
+    }, 1500);
+  } catch(e) {
+    statusEl.innerHTML = '<span style="color:var(--red);">❌ Error: ' + e.message + '</span>';
+    showToast('❌ ' + e.message);
+  }
+}
+
+// ═══════════════════════════════════════════
+// PDF HELPER FUNCTIONS
+// ═══════════════════════════════════════════
+
+// Toggle UTR field based on payment mode
+function toggleUTR() {
+  const mode = document.getElementById("fee-paymode").value;
+  const utr = document.getElementById("fee-utr");
+  if (mode === "नकद") {
+    utr.style.display = "none";
+    utr.value = "";
+  } else {
+    utr.style.display = "block";
+  }
+}
+
+// Main PDF download helper — uses html2canvas + jsPDF (A4 multi-page fix)
+async function downloadAsPDF(htmlContent, filename) {
+  showToast("📄 PDF taiyaar ho rahi hai...");
+  const zone = document.getElementById('pdfRenderZone');
+  zone.innerHTML = htmlContent;
+  await new Promise(r => setTimeout(r, 400));
+  try {
+    const canvas = await html2canvas(zone, {
+      scale: 3.125,          // 300 DPI (96 × 3.125 = 300)
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      scrollX: 0, scrollY: 0,
+      windowWidth: 794
+    });
+    const imgData = canvas.toDataURL('image/jpeg', 1.0); // JPEG full quality — smaller than PNG at 300DPI
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfW = pdf.internal.pageSize.getWidth();   // 210mm
+    const pdfH = pdf.internal.pageSize.getHeight();  // 297mm
+    // Margins: top=25.4mm (1 inch), left=right=12.7mm (0.5 inch)
+    const marginTop = 25.4;
+    const marginLR  = 12.7;
+    const contentW  = pdfW - (marginLR * 2);         // 210 - 25.4 = 184.6mm
+    const imgH      = (canvas.height * contentW) / canvas.width;
+    const pageContentH = pdfH - marginTop - 10;      // usable height per page
+    let posY   = 0;
+    let page   = 0;
+    let remaining = imgH;
+    while (remaining > 0) {
+      if (page > 0) pdf.addPage();
+      const yOffset = page === 0 ? marginTop : 10;
+      pdf.addImage(imgData, 'JPEG', marginLR, yOffset - posY, contentW, imgH);
+      posY      += pageContentH;
+      remaining -= pageContentH;
+      page++;
+    }
+    pdf.save(filename);
+    showToast("✅ PDF download ho gayi!");
+  } catch(e) {
+    showToast("❌ PDF error: " + e.message);
+  } finally {
+    zone.innerHTML = '';
+  }
+}
+
+// Receipt Image (PNG) download helper
+async function downloadAsImage(htmlContent, filename) {
+  showToast("🖼️ Image taiyaar ho rahi hai...");
+  const zone = document.getElementById('pdfRenderZone');
+  // Receipt ke liye narrow width
+  zone.style.width = '380px';
+  zone.innerHTML = htmlContent;
+  await new Promise(r => setTimeout(r, 400));
+  try {
+    const canvas = await html2canvas(zone, {
+      scale: 3,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      scrollX: 0, scrollY: 0,
+      windowWidth: 380
+    });
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast("✅ Image download ho gayi!");
+  } catch(e) {
+    showToast("❌ Image error: " + e.message);
+  } finally {
+    zone.innerHTML = '';
+    zone.style.width = '794px';
+  }
+}
+
+// Fee row direct PDF download (no modal)
+async function downloadFeeRowPDF(f) {
+  const discountRow = Number(f.discount) > 0
+    ? `<div style="display:flex;justify-content:space-between;padding:3px 0;"><span>Discount</span><span style="color:green;">${rupee(f.discount)}</span></div>` : "";
+  const html = `
+    <div style="border:2px solid #000;padding:20px;max-width:340px;font-size:13px;font-family:Arial,sans-serif;">
+      <h2 style="text-align:center;font-size:16px;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:12px;">
+        स्वामी विवेकानन्द पुस्तकालय<br><small style="font-size:11px;font-weight:400;">खोथांवाली</small>
+      </h2>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>रसीद संख्या</span><strong>${f.receiptNo}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>नाम</span><span>${f.name||f.memberName||""}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>पिता का नाम</span><span>${f.fatherName||"—"}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>महीना</span><span>${monthDisplay(f.month||feeMonthStr(f))}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #000;margin-top:8px;font-weight:700;"><span>जमा राशि</span><span>${rupee(f.amount)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>बाकी राशि</span><span style="color:red;">${rupee(f.due)}</span></div>
+      ${Number(f.advance) > 0 ? `<div style="display:flex;justify-content:space-between;padding:3px 0;"><span>अग्रिम / Advance</span><span style="color:green;font-weight:700;">₹${Number(f.advance).toLocaleString('hi-IN')} (अगले माह)</span></div>` : ""}
+      ${discountRow}
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>भुगतान विधि</span><span>${f.paymentMode||"नकद"}</span></div>
+      ${(f.utrNumber && f.paymentMode !== "नकद") ? `<div style="display:flex;justify-content:space-between;padding:3px 0;"><span>UTR No.</span><span>${f.utrNumber}</span></div>` : ""}
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>तारीख</span><span>${dateDisplay(f.date)}</span></div>
+      <div style="text-align:right;margin-top:20px;font-size:12px;font-weight:600;border-top:1px dashed #000;padding-top:6px;">अध्यक्ष के हस्ताक्षर</div>
+      <div style="text-align:center;margin-top:12px;font-size:11px;color:#555;">धन्यवाद! 🙏<br>यह रसीद वैध प्रमाण है।</div>
+    </div>`;
+  await downloadAsPDF(html, `Receipt_${f.receiptNo}.pdf`);
+}
+
+// Member admission PDF download — same format as downloadAdmissionForm
+async function downloadMemberPDF(memberId) {
+  const m = members.find(x => x.id === memberId);
+  if (!m) { showToast("❌ सदस्य नहीं मिला"); return; }
+  // DOB format
+  let dob = "—";
+  if (m.dob) {
+    const d = String(m.dob).trim();
+    const mx = d.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (mx) dob = mx[3] + "/" + mx[2] + "/" + mx[1];
+    else if (d.includes("/")) dob = d;
+    else dob = d;
+  }
+  const today = new Date().toLocaleDateString("hi-IN");
+  const html = `<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<title>प्रवेश फॉर्म – ${m.name}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Arial',sans-serif;background:#fff;margin:0;padding:96px 48px 48px 48px;}
+  .form-wrap{width:100%;max-width:720px;margin:0 auto;border:3px double #000;padding:18px;}
+  .header{text-align:center;margin-bottom:8px;}
+  .header h1{font-size:17px;margin:0 0 2px;font-weight:bold;}
+  .header .sub{font-size:11px;color:#444;margin:1px 0;}
+  .divider{border-top:2px solid #000;margin:8px 0;}
+  .form-title{text-align:center;font-size:13px;font-weight:bold;margin:8px 0;letter-spacing:1px;text-decoration:underline;}
+  table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:6px;}
+  td{padding:5px 8px;border:1px solid #555;vertical-align:top;}
+  td:first-child{font-weight:bold;width:36%;background:#f0f0f0;}
+  .fee-box{background:#e6f4ea;border:1px solid #1e8e3e;padding:7px 12px;border-radius:4px;margin:6px 0;font-size:11px;}
+  .sign-row{display:flex;justify-content:space-between;margin-top:24px;font-size:11px;}
+  .sign-box{text-align:center;width:160px;}
+  .sign-line{border-top:1px solid #000;padding-top:4px;margin-top:32px;}
+  .footer{text-align:center;font-size:10px;color:#777;margin-top:10px;border-top:1px solid #ccc;padding-top:6px;}
+  @media print{body{padding:0;} @page{size:A4;margin-top:25.4mm;margin-left:12.7mm;margin-right:12.7mm;margin-bottom:12.7mm;}}
+</style>
+</head>
+<body>
+<div class="form-wrap">
+  <div class="header">
+    <h1>📚 स्वामी विवेकानन्द पुस्तकालय</h1>
+    <div class="sub">खोथांवाली, हनुमानगढ़</div>
+    <div class="sub">Library Student Registration Form</div>
+  </div>
+  <div class="divider"></div>
+  <div class="form-title">सदस्यता प्रवेश फॉर्म / Admission Form</div>
+  <table>
+    <tr><td colspan="3" style="background:#000;color:#fff;font-weight:bold;padding:5px 8px;font-size:11px;letter-spacing:.5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">🪪 व्यक्तिगत जानकारी / Personal Details</td></tr>
+    <tr><td>सदस्य ID / Member ID</td><td colspan="2"><strong style="color:#1a73e8;font-size:13px;">${m.id}</strong></td></tr>
+    <tr><td>विद्यार्थी का नाम</td><td colspan="2"><strong>${m.name}</strong></td></tr>
+    <tr><td>पिता का नाम</td><td colspan="2">${m.fatherName||"—"}</td></tr>
+    <tr><td>माता का नाम</td><td colspan="2">${m.motherName||"—"}</td></tr>
+    <tr><td>जन्म तिथि / DOB</td><td>${dob}</td><td>लिंग / Gender: <strong>${m.gender||"—"}</strong></td></tr>
+    <tr><td>मोबाइल / Mobile</td><td>${m.mobile||"—"}</td><td>Email: ${m.email||"—"}</td></tr>
+    <tr><td>उच्चतम शिक्षा</td><td colspan="2">${m.qualification||"—"}</td></tr>
+    <tr><td>पूरा पता / Address</td><td colspan="2">${m.address||"—"}${m.city?", "+m.city:""}${m.state?", "+m.state:""}</td></tr>
+  </table>
+  <table>
+    <tr><td colspan="2" style="background:#000;color:#fff;font-weight:bold;padding:5px 8px;font-size:11px;letter-spacing:.5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">💰 सदस्यता विवरण / Membership Details</td></tr>
+    <tr><td>सदस्यता प्रकार</td><td><strong>${m.membershipType||"—"}</strong></td></tr>
+    <tr><td>ज्वाइन तारीख</td><td><strong>${formatJoinDate(m.joinDate||m.joinMonth)||"—"}</strong></td></tr>
+    <tr><td>मासिक शुल्क / Monthly Fee</td><td>₹${Number(m.totalFee||0).toLocaleString('hi-IN')}</td></tr>
+    <tr><td>पहले माह की फीस</td><td><strong style="color:#1e8e3e;font-size:13px;">₹${Number(m.firstMonthFee||m.totalFee||0).toLocaleString('hi-IN')}</strong></td></tr>
+    <tr><td>आवेदन तारीख</td><td>${today}</td></tr>
+  </table>
+  <div class="fee-box">
+    💡 <strong>नोट:</strong> पहले माह की फीस ज्वाइन तारीख के अनुसार अनुपातिक रूप से गणना की गई है।
+  </div>
+  <div class="sign-row">
+    <div class="sign-box"><div class="sign-line">विद्यार्थी के हस्ताक्षर<br><small>(Signature of Student)</small></div></div>
+    <div class="sign-box"><div class="sign-line">अध्यक्ष के हस्ताक्षर<br><small>स्वामी विवेकानन्द पुस्तकालय</small></div></div>
+  </div>
+  <div class="footer">
+    यह फॉर्म वैध प्रमाण है। दोनों पक्षों के हस्ताक्षर आवश्यक हैं।<br>
+    This form is a valid proof. Signatures of both parties are required.
+  </div>
+</div>
+<\/body>
+<\/html>`;
+  await downloadAsPDF(html, `Admission_${m.name}_${m.id}.pdf`);
+}
+
+// Expense row direct PDF download
+async function downloadExpRowPDF(e) {
+  const html = `
+    <div style="border:2px solid #000;padding:20px;max-width:340px;font-size:13px;font-family:Arial,sans-serif;">
+      <h2 style="text-align:center;font-size:16px;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:12px;">
+        स्वामी विवेकानन्द पुस्तकालय<br><small style="font-size:11px;font-weight:400;">खोथांवाली — खर्च रसीद</small>
+      </h2>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>ID</span><strong>${e.expId}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>श्रेणी</span><span>${e.category}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>विवरण</span><span>${e.description}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #000;margin-top:8px;font-weight:700;"><span>राशि</span><span>${rupee(e.amount)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>भुगतान</span><span>${e.paymentMethod}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>तारीख</span><span>${e.date}</span></div>
+      ${e.note?`<div style="display:flex;justify-content:space-between;padding:3px 0;"><span>नोट</span><span>${e.note}</span></div>`:""}
+      <div style="text-align:center;margin-top:12px;font-size:11px;color:#555;">स्वामी विवेकानन्द पुस्तकालय 🏛️</div>
+    </div>`;
+  await downloadAsPDF(html, `Expense_${e.expId}.pdf`);
+}
+
+// Expense receipt modal PDF
+async function downloadExpReceiptPDF() {
+  const content = document.getElementById("expReceiptContent").innerHTML;
+  await downloadAsPDF(content, `Expense_Receipt_${Date.now()}.pdf`);
+}
+
+// Expenses export PDF (all filtered)
+async function exportExpensesPDF() {
+  const month = document.getElementById("expMonth").value;
+  const cat = document.getElementById("expCatFilter").value;
+  const filtered = expenses.filter(e => {
+    if (month && !String(e.date).startsWith(month)) return false;
+    if (cat && e.category !== cat) return false;
+    return true;
+  });
+  const total = filtered.reduce((s,e)=>s+Number(e.amount),0);
+  const rows = filtered.map((e,i)=>`
+    <tr>
+      <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">${i+1}</td>
+      <td style="padding:6px 8px;border:1px solid #ddd;">${e.date}</td>
+      <td style="padding:6px 8px;border:1px solid #ddd;">${e.category}</td>
+      <td style="padding:6px 8px;border:1px solid #ddd;">${e.description}</td>
+      <td style="padding:6px 8px;border:1px solid #ddd;font-weight:600;">₹${Number(e.amount).toLocaleString("hi-IN")}</td>
+      <td style="padding:6px 8px;border:1px solid #ddd;">${e.paymentMethod}</td>
+    </tr>`).join("");
+  const html = `
+    <div style="font-family:Arial,sans-serif;padding:16px;">
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-size:18px;font-weight:bold;">स्वामी विवेकानन्द पुस्तकालय</div>
+        <div style="font-size:13px;color:#444;">खोथांवाली, हनुमानगढ़</div>
+        <div style="font-size:14px;font-weight:bold;margin-top:8px;text-decoration:underline;">खर्च विवरण / Expense Report</div>
+        <div style="font-size:12px;color:#666;margin-top:4px;">${month||"सभी महीने"} ${cat?"| श्रेणी: "+cat:""}</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#1a73e8;color:#fff;">
+            <th style="padding:8px;border:1px solid #ddd;">क्र.</th>
+            <th style="padding:8px;border:1px solid #ddd;">तारीख</th>
+            <th style="padding:8px;border:1px solid #ddd;">श्रेणी</th>
+            <th style="padding:8px;border:1px solid #ddd;">विवरण</th>
+            <th style="padding:8px;border:1px solid #ddd;">राशि</th>
+            <th style="padding:8px;border:1px solid #ddd;">भुगतान</th>
+          </tr>
+        </thead>
+        <tbody>${rows||'<tr><td colspan="6" style="text-align:center;padding:12px;">कोई खर्च नहीं</td></tr>'}</tbody>
+        <tfoot>
+          <tr style="background:#f0f4f8;font-weight:bold;">
+            <td colspan="4" style="padding:8px;border:1px solid #ddd;text-align:right;">कुल राशि / Total:</td>
+            <td style="padding:8px;border:1px solid #ddd;color:#d93025;">₹${total.toLocaleString("hi-IN")}</td>
+            <td style="border:1px solid #ddd;"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>`;
+  await downloadAsPDF(html, `Expenses_${month||'All'}.pdf`);
+}
+
+// Report PDF download
+async function downloadReportPDF() {
+  const month = document.getElementById("repMonth").value;
+  const income = document.getElementById("rep-income").textContent;
+  const expense = document.getElementById("rep-expense").textContent;
+  const profit = document.getElementById("rep-profit").textContent;
+  const due = document.getElementById("rep-due").textContent;
+  const mFees = fees.filter(f => feeMonthStr(f) === month);
+  const mExp = expenses.filter(e => String(e.date).startsWith(month));
+  const feeRows = mFees.map(f=>`
+    <tr>
+      <td style="padding:5px 8px;border:1px solid #ddd;">${f.receiptNo}</td>
+      <td style="padding:5px 8px;border:1px solid #ddd;">${f.memberName||f.name||"—"}</td>
+      <td style="padding:5px 8px;border:1px solid #ddd;">${monthDisplay(f.month)||f.month}</td>
+      <td style="padding:5px 8px;border:1px solid #ddd;font-weight:600;">${rupee(f.amount)}</td>
+      <td style="padding:5px 8px;border:1px solid #ddd;">${f.date}</td>
+    </tr>`).join("");
+  const expRows = mExp.map(e=>`
+    <tr>
+      <td style="padding:5px 8px;border:1px solid #ddd;">${e.date}</td>
+      <td style="padding:5px 8px;border:1px solid #ddd;">${e.category}</td>
+      <td style="padding:5px 8px;border:1px solid #ddd;">${e.description}</td>
+      <td style="padding:5px 8px;border:1px solid #ddd;font-weight:600;color:#d93025;">${rupee(e.amount)}</td>
+    </tr>`).join("");
+  const html = `
+    <div style="font-family:Arial,sans-serif;padding:16px;">
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-size:18px;font-weight:bold;">स्वामी विवेकानन्द पुस्तकालय</div>
+        <div style="font-size:13px;color:#444;">खोथांवाली, हनुमानगढ़</div>
+        <div style="font-size:14px;font-weight:bold;margin-top:8px;text-decoration:underline;">वित्तीय रिपोर्ट / Financial Report</div>
+        <div style="font-size:12px;color:#666;margin-top:4px;">${monthDisplay(month)||month}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div style="border:1px solid #1e8e3e;border-radius:8px;padding:12px;background:#e6f4ea;text-align:center;">
+          <div style="font-size:11px;color:#666;">कुल आय / Total Income</div>
+          <div style="font-size:20px;font-weight:bold;color:#1e8e3e;">${income}</div>
+        </div>
+        <div style="border:1px solid #d93025;border-radius:8px;padding:12px;background:#fce8e6;text-align:center;">
+          <div style="font-size:11px;color:#666;">कुल खर्च / Total Expense</div>
+          <div style="font-size:20px;font-weight:bold;color:#d93025;">${expense}</div>
+        </div>
+        <div style="border:1px solid #1a73e8;border-radius:8px;padding:12px;background:#e8f0fe;text-align:center;">
+          <div style="font-size:11px;color:#666;">शुद्ध लाभ / Net Profit</div>
+          <div style="font-size:20px;font-weight:bold;">${profit}</div>
+        </div>
+        <div style="border:1px solid #e37400;border-radius:8px;padding:12px;background:#fef3e2;text-align:center;">
+          <div style="font-size:11px;color:#666;">बकाया / Pending Due</div>
+          <div style="font-size:20px;font-weight:bold;color:#e37400;">${due}</div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:bold;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:4px;">माह की फीस / Month Fees</div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px;">
+        <thead><tr style="background:#1a73e8;color:#fff;">
+          <th style="padding:6px 8px;border:1px solid #ddd;">रसीद</th>
+          <th style="padding:6px 8px;border:1px solid #ddd;">नाम</th>
+          <th style="padding:6px 8px;border:1px solid #ddd;">महीना</th>
+          <th style="padding:6px 8px;border:1px solid #ddd;">राशि</th>
+          <th style="padding:6px 8px;border:1px solid #ddd;">तारीख</th>
+        </tr></thead>
+        <tbody>${feeRows||'<tr><td colspan="5" style="text-align:center;padding:10px;">कोई रसीद नहीं</td></tr>'}</tbody>
+      </table>
+      <div style="font-size:13px;font-weight:bold;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:4px;">माह के खर्च / Month Expenses</div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead><tr style="background:#e37400;color:#fff;">
+          <th style="padding:6px 8px;border:1px solid #ddd;">तारीख</th>
+          <th style="padding:6px 8px;border:1px solid #ddd;">श्रेणी</th>
+          <th style="padding:6px 8px;border:1px solid #ddd;">विवरण</th>
+          <th style="padding:6px 8px;border:1px solid #ddd;">राशि</th>
+        </tr></thead>
+        <tbody>${expRows||'<tr><td colspan="4" style="text-align:center;padding:10px;">कोई खर्च नहीं</td></tr>'}</tbody>
+      </table>
+    </div>`;
+  await downloadAsPDF(html, `Report_${month}.pdf`);
+}
+
+document.querySelectorAll(".overlay").forEach(o => {
+  o.addEventListener("click", e => { if(e.target===o) o.classList.remove("show"); });
+});
+
+// ═══════════════════════════════════════════
+// FORM AUTO-SUGGEST — Google Form Sheet se naam search
+// ═══════════════════════════════════════════
+let suggestTimer = null;
+
+async function onMemberNameInput(val) {
+  // Download button sirf save ke baad dikhega
+  const box = document.getElementById("formSuggestions");
+  // Minimum 2 characters
+  if (!val || val.trim().length < 2) {
+    box.style.display = "none";
+    return;
+  }
+  // Debounce — 400ms wait
+  clearTimeout(suggestTimer);
+  suggestTimer = setTimeout(async () => {
+    box.style.display = "block";
+    box.innerHTML = '<div class="suggest-loading">🔍 खोज रहा है…</div>';
+    try {
+      const res = await api({action: "searchFormData", query: val.trim()});
+      const results = (res.results || res) || [];
+      if (!results.length) {
+        box.innerHTML = '<div class="suggest-loading">कोई परिणाम नहीं</div>';
+        return;
+      }
+      box.innerHTML = results.map((r, i) => `
+        <div class="suggest-item" onclick="fillFromForm(${i})" data-idx="${i}">
+          <div class="s-name">${r.naam}</div>
+          <div class="s-sub">पिता: ${r.pitaKaNaam || '—'} | 📱 ${r.mobile || '—'}</div>
+        </div>
+      `).join("");
+      // Store results globally for fillFromForm
+      window._formResults = results;
+    } catch(e) {
+      box.innerHTML = '<div class="suggest-loading">❌ ' + e.message + '</div>';
+    }
+  }, 400);
+}
+
+function fillFromForm(idx) {
+  const r = (window._formResults || [])[idx];
+  if (!r) return;
+  // Fill all fields from Form Sheet
+  document.getElementById("m-name").value          = r.naam || "";
+  document.getElementById("m-father").value         = r.pitaKaNaam || "";
+  document.getElementById("m-mother").value         = r.maataKaNaam || "";
+  document.getElementById("m-mobile").value         = r.mobile || "";
+  document.getElementById("m-email").value          = r.email || "";
+  document.getElementById("m-address").value        = r.address || "";
+  document.getElementById("m-city").value           = r.city || "";
+  document.getElementById("m-state").value          = r.state || "";
+  document.getElementById("m-qualification").value  = r.qualification || "";
+  // Gender
+  if (r.gender) document.getElementById("m-gender").value = r.gender;
+  // DOB: multiple format support (DD/MM/YYYY, YYYY-MM-DD, Date string)
+  if (r.dob) {
+    try {
+      const dobStr = String(r.dob).trim();
+      let yyyy, mm, dd;
+      if (dobStr.includes("/")) {
+        const dp = dobStr.split("/");
+        yyyy = dp[2].length === 4 ? dp[2] : "20" + dp[2];
+        mm = dp[1].padStart(2,"0");
+        dd = dp[0].padStart(2,"0");
+      } else if (dobStr.match(/^\d{4}-\d{2}-\d{2}/)) {
+        yyyy = dobStr.slice(0,4); mm = dobStr.slice(5,7); dd = dobStr.slice(8,10);
+      } else {
+        const d = new Date(dobStr);
+        if (!isNaN(d)) {
+          yyyy = d.getFullYear();
+          mm = String(d.getMonth()+1).padStart(2,"0");
+          dd = String(d.getDate()).padStart(2,"0");
+        }
+      }
+      if (yyyy && mm && dd) {
+        document.getElementById("m-dob").value = yyyy + "-" + mm + "-" + dd;
+      }
+    } catch(e) {}
+  }
+  // Joining Date — NAHI fill karenge (user khud bharega)
+  // Hide suggestions
+  document.getElementById("formSuggestions").style.display = "none";
+  showToast("✅ " + r.naam + " का सारा डेटा भर दिया!");
+  calcAdmissionFee();
+}
+
+// ─── Qualification Custom Toggle ───
+function toggleQualCustom(val) {
+  const customBox = document.getElementById("m-qualification-custom");
+  if (val === "__custom__") {
+    customBox.style.display = "block";
+    customBox.focus();
+  } else {
+    customBox.style.display = "none";
+    customBox.value = "";
+  }
+}
+
+// Click outside to close suggestions
+document.addEventListener("click", function(e) {
+  const box = document.getElementById("formSuggestions");
+  if (box && !box.contains(e.target) && e.target.id !== "m-name") {
+    box.style.display = "none";
+  }
+});
+</script>
+</body>
+</html>
